@@ -20,7 +20,7 @@ class OpticDelayLine:
         time.sleep(4)
         self.ser.read(size=5).decode('ascii')
         self.ser.write('GR\r\n'.encode('ascii'))  # go to the home position
-        time.sleep(4)
+        time.sleep(1)
         self.ser.read(size=5).decode('ascii')
         self.ser.write('T000.000\r\n'.encode('ascii'))  # set 0 delay time on home position
         self.ser.read(size=18).decode('ascii')

@@ -12,7 +12,7 @@ class CLD1015():
 			self.rm.list_resources()
 			exit(0)
 	
-	def __del__(self):
+	def close(self):
 		self.cld.close()
 		self.rm.close()   
 
@@ -42,24 +42,25 @@ class CLD1015():
 
 	def turn_off_all(self):
 		self.set_current(0)
-		print('set current 0')
-		time.sleep(1)
-	
+		print('Set current 0')
+		time.sleep(3)
 		self.turn_off_laser()
-		print('laser is OFF')
-		time.sleep(2)
-		
+		print('Laser is OFF')
+		time.sleep(3)
 		self.turn_off_tec()
-		print('tec is OFF')
+		print('Tec is OFF')
+		self.close()
+		print(self.__class__.__name__, 'closed!')
+		
 		
 		
 	def turn_on_all(self):
 		self.turn_on_tec()
-		print('tec is ON')
+		print('CLD1015: tec is ON')
 		time.sleep(2)
-		
 		self.turn_on_laser()
-		print('laser is ON')
+		print('CLD1015: laser is ON')
+		
 if __name__ == "__main__":
 	LD = CLD1015()
 	LD.turn_on_all()

@@ -15,10 +15,12 @@ class PMDevicePM100D():
             exit(0)
 
 
-    def __del__(self):
+    def disconnect(self):
+        """ Отключить соединение"""
         self.pm.control_ren(False)
         self.pm.close()
         self.rm.close()
+        print('Power meter is disconnect')
 
     def get_power(self):
         power = float(self.pm.query('measure:power?'))
@@ -46,4 +48,4 @@ def measure_average_power(pm_device):
 if __name__ == "__main__":
     pm_device=PMDevicePM100D()
     current_pm_power = measure_average_power(pm_device)
-    print('current pm power =',current_pm_power,'mW')
+    print('Сurrent pm power =',current_pm_power,'mW')

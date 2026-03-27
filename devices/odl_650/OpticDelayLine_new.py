@@ -29,7 +29,7 @@ class OpticDelayLine:
                 dsrdtr=False
             )
             self.is_connected = True
-            print(f"Порт {self.port} открыт")
+            print(f"ODL_650: порт {self.port} открыт")
             return True
         except Exception as e:
             print(f"Ошибка подключения: {e}")
@@ -98,7 +98,7 @@ class OpticDelayLine:
             print("В ответе не найдено числового значения")
             return None
 
-    def set_time_delay(self, time_delay, max_attempts=5, pause_between_attempts=5.0):
+    def set_time_delay(self, time_delay, max_attempts=10, pause_between_attempts=3.0):
         """
         Задать время задержки.
         Если ответ не 'Done', команда отправляется повторно до max_attempts раз.

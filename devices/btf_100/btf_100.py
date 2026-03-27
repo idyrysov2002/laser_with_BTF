@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 BTF-100: Класс управления оптическим фильтром OZ Optics
-Минимальная версия
 """
 
 import serial
@@ -31,14 +30,16 @@ class BTF100:
         self.timeout = 2.0
         self.ser: Optional[serial.Serial] = None
         self._connected = False
+        
+        # Вызываем подключение сразу
+        if not self.connect():
+            # Если connect() вернул False, выбрасываем ошибку
+            raise ConnectionError(f"BTF100: не удалось подключиться к порту {port}")
     
-    # ─────────────────────────────────────────────────────────────
-    # 1. ПОДКЛЮЧЕНИЕ / ОТКЛЮЧЕНИЕ
-    # ─────────────────────────────────────────────────────────────
     
     def connect(self) -> bool:
         """
-        1. Подключение к устройству.
+        Подключение к устройству.
         
         Returns:
             bool: True если успешно
@@ -62,7 +63,7 @@ class BTF100:
             # Проверка связи
             response = self._send('DEV?', wait=1.0)
             if 'Device:' in response and 'BTF' in response:
-                print(f"Подключено: {self.port}")
+                print(f"BTF100: подключено к порту {self.port}")
                 self._connected = True
                 return True
             else:
@@ -74,15 +75,15 @@ class BTF100:
             return False
     
     def disconnect(self):
-        """4. Отключение от устройства."""
+        """Отключение от устройства."""
         if self.ser and self.ser.is_open:
             self.ser.close()
         self.ser = None
         self._connected = False
-        print("🔌 Отключено")
+        print("BTF100: Отключено")
     
     # ─────────────────────────────────────────────────────────────
-    # 2. УСТАНОВКА ПАРАМЕТРОВ
+    # УСТАНОВКА ПАРАМЕТРОВ
     # ─────────────────────────────────────────────────────────────
     
     def set_wavelength(self, wavelength: float):
@@ -97,7 +98,7 @@ class BTF100:
         
         command = f"W{wavelength:.2f}"
         self._send(command, wait=3.0)
-        print(f"WL={wavelength} нм")
+        print(f"BTF100: set_wavelength {wavelength}nm")
     
     def set_linewidth(self, linewidth: float):
         """
@@ -114,10 +115,9 @@ class BTF100:
         if current_wl is None:
             current_wl = 1550.0
         
-        # Команда: W<w>,<l> (запятая!)
         command = f"W{current_wl:.2f},{linewidth:.2f}"
         self._send(command, wait=3.0)
-        print(f"BW={linewidth} нм")
+        print(f"BTF100: set_linewidth {linewidth}nm")
     
     def set_wavelength_and_linewidth(self, wavelength: float, linewidth: float):
         """
@@ -132,10 +132,10 @@ class BTF100:
         if not (self.MIN_LINEWIDTH <= linewidth <= self.MAX_LINEWIDTH):
             raise ValueError(f"Ширина полосы: {self.MIN_LINEWIDTH}-{self.MAX_LINEWIDTH} нм")
         
-        # Правильный формат: запятая!
+
         command = f"W{wavelength:.2f},{linewidth:.2f}"
         self._send(command, wait=3.0)
-        print(f"WL={wavelength} нм, BW={linewidth} нм")
+        print(f"BTF100: set_wavelength_and_linewidth WL={wavelength}nm, BW={linewidth}nm")
     
     # ─────────────────────────────────────────────────────────────
     # 3. ПОЛУЧЕНИЕ ПАРАМЕТРОВ

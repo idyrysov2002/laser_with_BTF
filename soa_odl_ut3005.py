@@ -11,7 +11,7 @@ from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.create_map_and_save import create_map_and_save
 from scripts.number_with_decimal_prefix import number_with_decimal_prefix
 from devices.pm_400.PMDevice import PMDevicePM100D, measure_average_power
-from devices.oscilloscope.oscilloscope_measure_lib import oscilloscope_measurement
+from measure_libs.oscilloscope_measure_lib import oscilloscope_measurement
 from pathlib import Path
 import numpy as np
 
@@ -22,15 +22,14 @@ from config import *
 # ===================
 
 # from devices.yokogawa.OSA_Yokogawa_new import OSA_Yokogawa_new
-from devices.btf_100.btf_100 import BTF100
-from devices.rsa_device.rf_measure_lib import rf_measurement
+# from devices.btf_100.btf_100 import BTF100
+from measure_libs.rf_measure_lib import rf_measurement
 from devices.rsa_device.RF306B import RF306B
 from devices.odl_650.OpticDelayLine_new import OpticDelayLine
 from devices.ut_3005.VoltageDriverUT3005 import VoltageDriverUT3005
 from devices.cdl_1015.CLD1015 import CLD1015
 from devices.oscilloscope.tektronix_DPO71604C import Oscilloscope
 oscilloscope=Oscilloscope(ip="10.2.60.150", port=4000)
-
 
 
 # === Определение имён для папок спанов (с Hz) ===
@@ -43,7 +42,7 @@ min_span = f'span_{number_with_decimal_prefix(RF_SPAN_MIN)}Hz'
 # ============================================================
 
 
-def build_voltage_maps(wavelength, voltage, main_folder, data_buf):
+def build_voltage_maps(voltage, main_folder, data_buf):
     """Внутренняя функция: строит 6 тепловых карт для заданного напряжения."""
     
     
@@ -51,7 +50,7 @@ def build_voltage_maps(wavelength, voltage, main_folder, data_buf):
     mask = np.array(data_buf['voltage']) == voltage
     
     # Папка для карт этого напряжения
-    plot_subfolder = Path(main_folder) / f"maps/wavelength_{wavelength}nm/voltage_{voltage}V"
+    plot_subfolder = Path(main_folder) / f"rf_measurements/maps/voltage_{voltage}V"
     plot_subfolder.mkdir(parents=True, exist_ok=True)
     
     # Данные для осей
@@ -88,7 +87,7 @@ def build_voltage_maps(wavelength, voltage, main_folder, data_buf):
 def main():
     main_folder = create_date_folder(base_path="Z:/data_for_laser_with_BTF", prefix='laser_with_btf')
 
-    params = itertools.product(WAVELENGTH, VOLTAGES, CURRENTS, DELAYS)
+    params = itertools.product(VOLTAGES, CURRENTS, DELAYS)
 
     # === Буфер для сбора данных ===
     collected_data = {
@@ -101,7 +100,7 @@ def main():
     }
     
     current_voltage_batch = None
-    wavelength_prev=-1
+    
     voltage_prev = -1
     current_prev = -1
     delay_prev = -1
@@ -113,7 +112,6 @@ def main():
         pm_device = PMDevicePM100D()
         odl = OpticDelayLine('COM10')
         odl.initialize()
-        
         # osa = OSA_Yokogawa_new()
         rf_device = RF306B()
         LD = CLD1015()
@@ -122,13 +120,10 @@ def main():
         ut = VoltageDriverUT3005('COM8')
         ut.turn_on()
 
-        btf = BTF100(port='COM12')
-        btf.connect()
+        for idx, (voltage, current, delay) in enumerate(params, 1):
 
-        for idx, (wavelength, voltage, current, delay) in enumerate(params, 1):
-
-            base_folder_structure=f"wavelength_{wavelength}nm/voltage_{voltage}V/current_{current}mA"
-            base_filename=f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V_wavelength_{wavelength}nm' 
+            base_folder_structure=f"voltage_{voltage}V/current_{current}mA"
+            base_filename=f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V' 
 
             # === Построение карт при смене напряжения ===
             if current_voltage_batch is not None and voltage != current_voltage_batch:
@@ -140,11 +135,7 @@ def main():
            
 
             # === НАСТРОЙКА ОБОРУДОВАНИЯ ===
-
-            wavelength_next=wavelength
-            if wavelength_prev!=wavelength_next:
-                btf.set_wavelength(wavelength=wavelength)
-                wavelength_prev = wavelength_next
+            
             voltage_next = voltage
             if voltage_prev != voltage_next:
                 ut.set_voltage(voltage=voltage)

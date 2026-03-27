@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 import numpy as np
-from scripts.read_from_txt import read_txt_xy
 def calculate_smsr(freq_arr, peak_arr):
     """
     Вычисляет SMSR (Side Mode Suppression Ratio).

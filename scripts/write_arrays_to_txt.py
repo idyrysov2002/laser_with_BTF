@@ -1,24 +1,14 @@
-import pandas as pd
 import os
+import pandas as pd
 
-def write_arrays_txt(*args, folder_path='.', filename='output.txt'):
+def write_arrays_txt(*args, folder_path='.', filename='output.txt', header_lines=None):
     """
     Записывает массивы в текстовый файл (.txt) с разделением табуляцией.
-    
-    Синтаксис:
-        x_arr = [x_data, 'длина']
-        y_arr = [y_data, 'размер']
-        write_arrays_txt(x_arr, y_arr, folder_path='./output', filename='data.txt')
-    
-    Параметры:
-        *args        — списки/кортежи [массив, заголовок]
-        folder_path  — путь к папке
-        filename     — имя файла (желательно с расширением .txt)
     """
     arrays = []
     labels = []
     
-    # 1. Валидация входных данных
+    # 1. Валидация входных данных (массивы)
     for i, arg in enumerate(args):
         if not isinstance(arg, (list, tuple)) or len(arg) != 2:
             raise ValueError(f"Аргумент {i+1} должен быть списком/кортежем [массив, заголовок]")
@@ -35,40 +25,57 @@ def write_arrays_txt(*args, folder_path='.', filename='output.txt'):
         if len(arr) != length:
             raise ValueError(f"Все массивы должны быть одинаковой длины. Массив {i+1} ('{labels[i]}') имеет длину {len(arr)}, ожидалось {length}.")
     
-    # 3. Создание папки, если нет
+    # 3. Валидация header_lines
+    if header_lines is not None:
+        if not isinstance(header_lines, (list, tuple)):
+            raise ValueError("Параметр header_lines должен быть списком или кортежем строк.")
+        for i, line in enumerate(header_lines):
+            if not isinstance(line, str):
+                header_lines = list(header_lines)
+                header_lines[i] = str(line)
+
+    # 4. Создание папки
     os.makedirs(folder_path, exist_ok=True)
     
-    # Проверка и добавление расширения .txt
     if not filename.lower().endswith('.txt'):
         filename = f"{filename}.txt"
     
     filepath = os.path.join(folder_path, filename)
     
-    # 4. Формирование DataFrame и запись в TXT
+    # 5. Формирование DataFrame
     data_dict = {label: arr for label, arr in zip(labels, arrays)}
     df = pd.DataFrame(data_dict)
     
-    # sep='\t' устанавливает разделитель табуляцию
-    # encoding='utf-8' обеспечивает корректное отображение кириллицы
-    df.to_csv(filepath, sep='\t', index=False, encoding='utf-8')
+    # 6. Запись в файл
+    with open(filepath, 'w', encoding='utf-8', newline='') as f:
+        # Запись пользовательских заголовков
+        if header_lines:
+            for line in header_lines:
+                f.write(f"{line}\n")
+        
+        # Запись таблицы с явным указанием разделителя строк
+        # lineterminator='\n' гарантирует одну новую строку вместо возможной двойной
+        df.to_csv(f, sep='\t', index=False, lineterminator='\n')
     
-    print(f"Данные успешно сохранены в {filepath}\n")
+    print(f"Данные успешно сохранены в файл txt")
 
-
+# Пример использования:
 if __name__ == "__main__":
-    # Пример данных
-    x_data = [1, 2, 3, 4, 5]
-    y_data = [10, 20, 25, 40, 55]
-    z_data = [0.1, 0.2, 0.3, 0.4, 0.5]
-
-    # Формируем аргументы: [данные, имя столбца]
-    col_x = [x_data, 'Время, с']
-    col_y = [y_data, 'Напряжение, В']
-    col_z = [z_data, 'Ток, А']
-
-    # Вызов функции
+    # Данные
+    x = [1, 2, 3]
+    y = [10, 20, 30]
+    
+    # Дополнительные строки в начале файла
+    custom_headers = [
+        "Отчет по измерениям",
+        "Дата: 25.10.2023",
+        "Оператор: Иванов И.И."
+    ]
+    
     write_arrays_txt(
-        col_x, col_y, col_z, 
-        folder_path='./results', 
-        filename='experiment_01.txt'
+        [x, 'Время'], 
+        [y, 'Сигнал'], 
+        header_lines=custom_headers, 
+        folder_path='./output', 
+        filename='result.txt'
     )

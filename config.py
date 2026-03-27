@@ -1,3 +1,9 @@
+import itertools
+import os
+import time
+import numpy as np
+from datetime import datetime
+import matplotlib.pyplot as plt
 # ─────────────────────────────────────────────────────────────
 # ДЕСЯТИЧНЫЕ ПРИСТАВКИ
 # ─────────────────────────────────────────────────────────────
@@ -16,8 +22,8 @@ STABILIZATION_TIME=3
 # НАСТРОЙКИ РАДИОЧАСТОТНИКА
 # ─────────────────────────────────────────────────────────────
 RF_LEVEL=-20
-RF_F_START_MAX = 9*KILO
-RF_F_STOP_MAX = 6.2*GIGA
+RF_F_START_MAX = 9e3
+RF_F_STOP_MAX = 6.2e+9
 RF_SPAN_MAX=6.2*GIGA
 RF_RBW_MAX=1*MEGA
 
@@ -27,24 +33,31 @@ RF_RBW_MIDDLE=10*KILO
 RF_SPAN_MIN=1*MEGA
 RF_RBW_MIN=1*KILO
 
-NUMBER_RF_MEASURE=2
+NUMBER_RF_MEASURE=1
 
+VOLTAGES=[0,1,2,3,4,5] # в V
+DELAYS=np.arange(0, 301, 5) # в ps
+CURRENTS=np.arange(300, 401, 100) # в mA
+WAVELENGTH=[1530, 1540, 1550, 1560] # в nm
+# LINEWIDTH=[1,2,18] # в nm
 
-CURRENTS=[100,200,300,400]
-DELAYS=[100,200,300]
-WAVELENGTH=[1525,1550,1565]
-LINEWIDTH=[1,2,3]
-VOLTAGES=[0,1,2,3]
+# VOLTAGES=[0] # в V
+# DELAYS=np.arange(0, 10, 5) # в ps
+# CURRENTS=np.arange(300, 401, 100) # в mA
+# WAVELENGTH=[1530, 1540] # в nm
+# OSCILLOSCOPE_MODES=['average', 'sample']
+OSCILLOSCOPE_MODES=['average']
+OSCILLOSCOPE_HOR_SCALES = [5e-10]
 
 YOKOGAWA_RES_BIG_SPAN=0.02
 YOKOGAWA_RES_SMALL_SPAN=0.02
 YOKOGAWA_BIG_SPAN_START=1510
 YOKOGAWA_BIG_SPAN_STOP=1570
 
-
 # Словарь конфигурации приборов
 # enabled: True/False - подключать или нет
 # port: COM-порт (если нужен)
+
 INSTRUMENTS = {
     "odl": {"enabled": True, "port": "COM6", "label": "d"},
     "btf": {"enabled": True, "port": "COM3"},
@@ -60,9 +73,6 @@ INSTRUMENTS = {
 # Быстрее всего менятся последний элемент SCAN_ORDER
 SCAN_ORDER = ["wavelength","voltage", "current", "delay", "linewidth"]
 
-OSCILLOSCOPE_MODES=['average', 'sample']
-OSCILLOSCOPE_HOR_SCALES = [2 * NANO, 10 * NANO]
-
 PARAM_UNITS = {
     "voltage": "V",
     "current": "mA",
@@ -71,6 +81,7 @@ PARAM_UNITS = {
     "wavelength": "nm",
 }
 
+
 PARAM_NAMES = {
     "voltage": "voltage",
     "current": "current",
@@ -78,6 +89,3 @@ PARAM_NAMES = {
     "linewidth": "linewidth",
     "wavelength": "wavelength",
 }
-
-# Порядок параметров в имени файла (только для активных)
-FILENAME_PARAM_ORDER = ["voltage", "current", "delay", "wavelength", "linewidth"]

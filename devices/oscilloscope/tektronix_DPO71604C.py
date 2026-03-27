@@ -16,7 +16,20 @@ class Oscilloscope:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(1.0)
         self.sock.connect((self.ip, self.port))
-        print(f"Соединение установлено с {self.ip}:{self.port}")
+        print(f"Oscilloscope: cоединение установлено с {self.ip}:{self.port}")
+        
+    def disconnect(self):
+        """Разрыв соединения с осциллографом"""
+        if hasattr(self, 'sock') and self.sock:
+            try:
+                self.sock.close()
+                self.sock = None
+                print(f"Соединение с {self.ip}:{self.port} закрыто")
+            except Exception as e:
+                print(f"Ошибка при закрытии соединения: {e}")
+                self.sock = None
+        else:
+            print("Соединение не было установлено или уже закрыто")
 
     def send_command(self, cmd, read_response=True, delay=0.2):
         """Отправка команды на осциллограф"""
@@ -261,6 +274,66 @@ class Oscilloscope:
 
     def waiting_status(self):
         return self.send_command("*OPC?",False)
+    
+    def measure_freq_stats(self, channel):
+        """
+        Измеряет частоту с статистикой (среднее, мин, макс, станд. отклонение).
+        
+        Args:
+            channel (int): Номер канала (1-4)
+        
+        Returns:
+            dict: Словарь со статистикой измерений
+        """
+        try:
+            # Настраиваем измерение
+            self.send_command(f"MEASUrement:MEAS1:TYPe FREQuency", False)
+            self.send_command(f"MEASUrement:MEAS1:SOUrce1 CH{channel}", False)
+            self.send_command("MEASUrement:MEAS1:STATE ON", False)
+            
+            # Включаем статистику
+            self.send_command("MEASUrement:STATIstics:MODe ALL", False)
+            
+            # # Ждем накопления статистики
+            # time.sleep(1)
+            
+            # Получаем статистику
+            value = self._parse_measurement("MEASUrement:MEAS1:VALue?")
+            mean = self._parse_measurement("MEASUrement:MEAS1:MEAN?")
+            min_val = self._parse_measurement("MEASUrement:MEAS1:MINImum?")
+            max_val = self._parse_measurement("MEASUrement:MEAS1:MAXimum?")
+            stddev = self._parse_measurement("MEASUrement:MEAS1:STDdev?")
+            count = self._parse_measurement("MEASUrement:MEAS1:COUNt?")
+            
+            return {
+                'value_GHz': value/1e+9,
+                'mean_GHz': mean/1e+9,
+                'min_GHz': min_val/1e+9,
+                'max_GHz': max_val/1e+9,
+                'stddev_GHz': stddev/1e+9,
+                'count': count
+            }
+            
+        except Exception as e:
+            print(f"Error при измерении статистики частоты: {e}")
+            return None
+        
+        
+    def _parse_measurement(self, command):
+        """
+        Вспомогательная функция для парсинга ответа измерения.
+        """
+        response = self.send_command(command)
+        if response:
+            try:
+                # Очищаем от заголовка команды
+                if ":" in response:
+                    response = response.split()[-1]
+                return float(response)
+            except:
+                return None
+        return None
+    
     
 if __name__=="__main__":
 

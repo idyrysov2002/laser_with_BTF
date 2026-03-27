@@ -6,26 +6,26 @@ class VoltageDriverUT3005():
 		self.ser.baudrate = 9600
 		if (self.ser.is_open == True):
 			time.sleep(0.5)
-			print ('Voltage Driver is connected')
+			print ('UT3005 is connected')
 
 
 	def set_voltage(self, voltage):
 		message = 'VSET1:{:.2f}'.format(voltage)
 		self.ser.write((message).encode())
 		time.sleep(0.5)
-		print('Set voltage = ', voltage)
+		print(f'UT3005: set voltage {voltage}V')
 
 	def turn_on(self):
 		message = 'OUT1'
 		self.ser.write((message).encode())
 		time.sleep(0.5)
-		print('The output is on')
+		print('UT3005: output is on')
 
 	def turn_off(self):
 		message = 'OUT0'
 		self.ser.write((message).encode())
 		time.sleep(0.5)
-		print('The output is off')
+		print('UT3005: output is off')
 
 	def receive(self):
 		line = self.ser.readline()
@@ -38,18 +38,19 @@ class VoltageDriverUT3005():
 		time.sleep(0.5)
 		return float(answer)
 	
-	def close(self):
-		"""Закрыть COM-порт."""
+	def out_off_and_close_COM(self):
+		"""Отключить OUT и закрыть COM-порт."""
 		if self.ser and self.ser.is_open:
 			self.turn_off() # Безопасно выключаем выход перед закрытием
 			self.ser.close()
-			time.sleep(0.5)
-			print('Voltage Driver is closed')
+			print('UT3005 is closed')
+	
+		
 
 if __name__=="__main__":
 	ut=VoltageDriverUT3005('COM8')
 	ut.turn_on()
-	voltage=27
+	voltage=4
 	ut.set_voltage(voltage)
 	a=ut.get_real_voltage()
-	print('Real voltage = ',a)
+	print('Real voltage = {a}V')

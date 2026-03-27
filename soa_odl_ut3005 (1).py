@@ -11,7 +11,7 @@ from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.create_map_and_save import create_map_and_save
 from scripts.number_with_decimal_prefix import number_with_decimal_prefix
 from devices.pm_400.PMDevice import PMDevicePM100D, measure_average_power
-from devices.oscilloscope.oscilloscope_measure_lib import oscilloscope_measurement
+from measure_libs.oscilloscope_measure_lib import oscilloscope_measurement
 from pathlib import Path
 import numpy as np
 
@@ -23,7 +23,7 @@ from config import *
 
 # from devices.yokogawa.OSA_Yokogawa_new import OSA_Yokogawa_new
 # from devices.btf_100.btf_100 import BTF100
-from devices.rsa_device.rf_measure_lib import rf_measurement
+from measure_libs.rf_measure_lib import rf_measurement
 from devices.rsa_device.RF306B import RF306B
 from devices.odl_650.OpticDelayLine_new import OpticDelayLine
 from devices.ut_3005.VoltageDriverUT3005 import VoltageDriverUT3005
