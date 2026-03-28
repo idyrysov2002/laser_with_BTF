@@ -46,13 +46,13 @@ WAVELENGTH=[1530, 1540, 1550, 1560] # в nm
 # CURRENTS=np.arange(300, 401, 100) # в mA
 # WAVELENGTH=[1530, 1540] # в nm
 # OSCILLOSCOPE_MODES=['average', 'sample']
-OSCILLOSCOPE_MODES=['average']
-OSCILLOSCOPE_HOR_SCALES = [5e-10]
+OSC_MODES=['average']
+OSC_HOR_SCALES = [5e-10]
 
-YOKOGAWA_RES_BIG_SPAN=0.02
-YOKOGAWA_RES_SMALL_SPAN=0.02
-YOKOGAWA_BIG_SPAN_START=1510
-YOKOGAWA_BIG_SPAN_STOP=1570
+YOKO_RES_BIG_SPAN=0.02
+# YOKO_RES_SMALL_SPAN=0.02
+YOKO_BIG_SPAN_START=1510
+YOKO_BIG_SPAN_STOP=1570
 
 # Словарь конфигурации приборов
 # enabled: True/False - подключать или нет
@@ -61,12 +61,12 @@ YOKOGAWA_BIG_SPAN_STOP=1570
 INSTRUMENTS = {
     "odl": {"enabled": True, "port": "COM6", "label": "d"},
     "btf": {"enabled": True, "port": "COM3"},
-    "yokogawa": {"enabled": True},
+    "yoko": {"enabled": True},
     "rf": {"enabled": True},
     "ld": {"enabled": True},
     "ut": {"enabled": True, "port": "COM8"},
     "pm": {"enabled": False},
-    "oscilloscope": {"enabled": True, "channel": "4", "ip": "123-223-233-233", "port": "4000"},
+    "osc": {"enabled": True, "channel": "4", "ip": "123-223-233-233", "port": "4000"},
 }
 
 # Здесь задается порядок вложенных циклов.

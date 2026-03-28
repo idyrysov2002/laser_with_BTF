@@ -37,12 +37,12 @@ class OpticDelayLine:
             return False
 
     def disconnect(self):
-        """Закрыть соединение"""
+        """Разрыв соединения"""
         try:
             if self.ser and self.ser.is_open:
                 self.ser.close()
                 self.is_connected = False
-                print("Порт закрыт")
+                print("ODL: Порт закрыт")
             else:
                 print("Порт уже закрыт")
         except Exception as e:

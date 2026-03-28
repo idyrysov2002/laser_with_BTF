@@ -1,5 +1,5 @@
 import numpy as np
-from scripts.create_folder import create_subfolder, create_multiple_subfolders
+from scripts.create_folder import create_multiple_subfolders
 from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.calculate_smsr import calculate_smsr

@@ -5,17 +5,17 @@ from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.create_folder import create_subfolder, create_multiple_subfolders
 from scripts.number_with_decimal_prefix import number_with_decimal_prefix
-from config import OSCILLOSCOPE_MODES
-from config import OSCILLOSCOPE_HOR_SCALES
+from config import OSC_MODES
+from config import OSC_HOR_SCALES
 
 
 def oscilloscope_measurement(device, save_folder_path, filename, folder_structure="folder_1/folder_2", channel=4, save_png=None):
     # Создаем словарь для сохранения статистики
     results = {}
-    for mode in OSCILLOSCOPE_MODES:
+    for mode in OSC_MODES:
         device.acquire_mode(mode)
 
-        for hor_scale in OSCILLOSCOPE_HOR_SCALES:
+        for hor_scale in OSC_HOR_SCALES:
             # Изменение горизонтального масштаба
             device.horizontal_scale(hor_scale)
             

@@ -38,7 +38,7 @@ class VoltageDriverUT3005():
 		time.sleep(0.5)
 		return float(answer)
 	
-	def out_off_and_close_COM(self):
+	def turn_off_and_close_COM(self):
 		"""Отключить OUT и закрыть COM-порт."""
 		if self.ser and self.ser.is_open:
 			self.turn_off() # Безопасно выключаем выход перед закрытием

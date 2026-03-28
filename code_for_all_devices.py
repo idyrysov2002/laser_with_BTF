@@ -123,9 +123,9 @@ def main():
                 save_folder_path=main_folder, 
                 folder_structure=base_folder_structure, 
                 filename=base_filename,
-                res=YOKOGAWA_RES_BIG_SPAN,
-                wave_start=YOKOGAWA_BIG_SPAN_START,
-                wave_stop=YOKOGAWA_BIG_SPAN_STOP,
+                res=YOKO_RES_BIG_SPAN,
+                wave_start=YOKO_BIG_SPAN_START,
+                wave_stop=YOKO_BIG_SPAN_STOP,
                 save_png=True)
 
             yokogawa_peak_wave_big_data.append(yokogawa_peak_wave_big)
@@ -140,7 +140,7 @@ def main():
                 save_folder_path=main_folder,
                 folder_structure=base_folder_structure,
                 filename=base_filename,
-                res=YOKOGAWA_RES_SMALL_SPAN,
+                res=YOKO_RES_SMALL_SPAN,
                 wave_start=YOKOGAWA_SMALL_SPAN_START,
                 wave_stop=YOKOGAWA_SMALL_SPAN_STOP,
                 save_png=True,
