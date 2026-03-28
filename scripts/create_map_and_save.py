@@ -55,7 +55,7 @@ def create_map_and_save(x_arr, y_arr, z_arr, title=None, folder_path=None, filen
                 file.write(txt_header + "\n")
                 for xi, yi, zi in zip(current_values, delay_values, map_values):
                     file.write(f"{xi}\t{yi}\t{zi}\n")
-            print(f"Данные сохранены: {txt_path}")
+            print(f"Данные успешно сохранены в:{txt_path}")
         except Exception as e:
             print(f"Ошибка сохранения TXT: {e}")
     
@@ -109,7 +109,7 @@ def create_map_and_save(x_arr, y_arr, z_arr, title=None, folder_path=None, filen
     plt.ylabel(y_label, fontsize=FONT_SIZE_LABEL, fontname=FONT_FAMILY)
     ax = plt.gca()
     ax.tick_params(axis='both', labelsize=FONT_SIZE_TICK_COLORBAR)
-    plt.grid(True, which='major', linestyle='-', linewidth=0.8, alpha=0.4, color='black')
+    plt.grid(True, which='major', linestyle='-', linewidth=0.5, alpha=0.2, color='black')
     plt.tight_layout()
     # ========================
     # СОХРАНЕНИЕ PNG И ВЫВОД
@@ -122,9 +122,9 @@ def create_map_and_save(x_arr, y_arr, z_arr, title=None, folder_path=None, filen
             print(f"Ошибка сохранения графика: {e}")
     
     if show_plot:
-        plt.show()
+        plt.show() 
 
-    plt.close()
+    plt.close()  # Освобождаем память
     
 if __name__ == "__main__":
     current = np.repeat([10, 20, 30, 40, 50], 4)      # Ток, мА

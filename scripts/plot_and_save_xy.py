@@ -20,21 +20,19 @@ def plot_and_save_xy(x, y, title, xlabel, ylabel,
     x=np.array(x)
     y=np.array(y)
     # ========================
-    # 📏 НАСТРОЙКИ ШРИФТОВ
+    # НАСТРОЙКИ ШРИФТОВ
     # ========================
 
-    FONT_FAMILY = 'Times New Roman'
+    FONT_FAMILY = 'serif'
     FONT_SIZE_BASE = 16          # Базовый размер шрифта
     FONT_SIZE_TITLE = 16      # Заголовок осей (axes title)
     FONT_SIZE_LABEL = 20         # Подписи осей (X, Y)
     FONT_SIZE_TICK = 16          # Деления осей
     FONT_SIZE_TITLE_TEXT = 22   # Заголовок графика (plt.title)
     
-    # Настройка сетки
-    MINOR_GRID = True
     
     # ========================
-    # 💾 ПОДГОТОВКА ПУТЕЙ
+    # ПОДГОТОВКА ПУТЕЙ
     # ========================
     full_path = None
     
@@ -47,7 +45,7 @@ def plot_and_save_xy(x, y, title, xlabel, ylabel,
         os.makedirs(folder_path, exist_ok=True)
 
     # ========================
-    # 🎨 НАСТРОЙКА СТИЛЯ
+    # НАСТРОЙКА СТИЛЯ
     # ========================
     rcParams['font.family'] = FONT_FAMILY
     rcParams.update({
@@ -60,7 +58,7 @@ def plot_and_save_xy(x, y, title, xlabel, ylabel,
     })
 
     # ========================
-    # 📈 ПОСТРОЕНИЕ ГРАФИКА
+    # ПОСТРОЕНИЕ ГРАФИКА
     # ========================
     plt.figure(figsize=(16, 9))
     plt.plot(x, y, linewidth=2)
@@ -72,10 +70,6 @@ def plot_and_save_xy(x, y, title, xlabel, ylabel,
     # Основная сетка
     plt.grid(True, which='major', linestyle='-', linewidth=1, alpha=1)
     
-    # Мелкая сетка
-    if MINOR_GRID:
-        plt.grid(True, which='minor', linestyle=':', linewidth=1, alpha=1)
-        plt.minorticks_on()
     
     # Настройка осей для автоматического отображения мелких делений
     ax = plt.gca()
@@ -83,15 +77,15 @@ def plot_and_save_xy(x, y, title, xlabel, ylabel,
     ax.yaxis.set_minor_locator(AutoMinorLocator())  
 
     # ========================
-    # 💾 СОХРАНЕНИЕ
+    # СОХРАНЕНИЕ
     # ========================
     if folder_path is not None and filename is not None:
         full_path = os.path.join(folder_path, f"{filename}.png")
         plt.savefig(full_path, dpi=300, bbox_inches='tight')
-        print(f"График сохранён")
+        print(f"График сохранён: {full_path}")
 
     # ========================
-    # 🖼️ ПОКАЗ ИЛИ ЗАКРЫТИЕ
+    # ПОКАЗ ИЛИ ЗАКРЫТИЕ
     # ========================
     if show_plot:
         plt.show()
@@ -101,7 +95,7 @@ def plot_and_save_xy(x, y, title, xlabel, ylabel,
     return full_path
 
 # ═══════════════════════════════════════════════════════════════
-# 📖 ПРИМЕРЫ ИСПОЛЬЗОВАНИЯ
+# ПРИМЕРЫ ИСПОЛЬЗОВАНИЯ
 # ═══════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
@@ -110,16 +104,17 @@ if __name__ == "__main__":
     y = [2, 4, 1, 5, 3]
    
     # ───────────────────────────────────────────────────────────
-    # 1️⃣ ТОЛЬКО ПОКАЗАТЬ (без сохранения)
+    # ТОЛЬКО ПОКАЗАТЬ (без сохранения)
     # ───────────────────────────────────────────────────────────
     plot_and_save_xy(
         x=x,
         y=y,
-        title=None,
+        title='График',
         xlabel="Ось X",
-        ylabel="Ось Y"
-        # folder_path и filename не указаны → не сохраняем
-        # show_plot=True по умолчанию → показываем
+        ylabel="Ось Y",
+        folder_path='graph',
+        filename='example',
+        show_plot=True #по умолчанию → показываем
     )
     
    

@@ -55,9 +55,9 @@ def write_arrays_txt(*args, folder_path='.', filename='output.txt', header_lines
         
         # Запись таблицы с явным указанием разделителя строк
         # lineterminator='\n' гарантирует одну новую строку вместо возможной двойной
-        df.to_csv(f, sep='\t', index=False, lineterminator='\n')
+        df.to_csv(f, sep='\t', index=False)
     
-    print(f"Данные успешно сохранены в файл txt")
+    print(f"Данные успешно сохранены в:{filepath}")
 
 # Пример использования:
 if __name__ == "__main__":
