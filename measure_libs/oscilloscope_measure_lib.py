@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Dict, Any
 from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.create_folder import create_subfolder, create_multiple_subfolders
@@ -9,11 +9,9 @@ from config import OSCILLOSCOPE_MODES
 from config import OSCILLOSCOPE_HOR_SCALES
 
 
-def oscilloscope_measurement(device, save_folder_path, filename, folder_structure="voltage/current", channel=4, save_png=None):
-    """ 
-    folder_structure: строка вида "voltage" или "voltage/current" или "a/b/c/d"
-    """
-
+def oscilloscope_measurement(device, save_folder_path, filename, folder_structure="folder_1/folder_2", channel=4, save_png=None):
+    # Создаем словарь для сохранения статистики
+    results = {}
     for mode in OSCILLOSCOPE_MODES:
         device.acquire_mode(mode)
 
@@ -70,7 +68,8 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
                 save_list_x,
                 save_list_y,
                 folder_path=measurement_folder,
-                filename=osc_filename,header_lines=header_lines
+                filename=osc_filename,
+                header_lines=header_lines
             )
 
             # Запись PNG (если нужно)
@@ -85,6 +84,11 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
                     filename=osc_filename,
                     show_plot=False,
                 )
+            # Сохраняем результат в словарь
+            key = (mode, hor_scale)
+            results[key] = {'stats': stats}
+
+    return results
 
         
             

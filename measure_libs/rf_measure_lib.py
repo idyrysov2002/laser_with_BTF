@@ -91,11 +91,14 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
             save_list_x = [freqs, x_label]
             save_list_y = [powers, y_label]
 
+            peak_freq_GHz=peak_freq/1e+9
+            png_title=f'Peak power: {peak_power:.2f}dBm, Freq(Peak power): {peak_freq_GHz:.2f}GHz, SMSR: {smsr:.2f}dB'
+
             # Сохраняем данные в созданную подпапку
             write_arrays_txt(save_list_x, save_list_y, folder_path=measurement_folder, filename=measurement_file_name)
             
             if save_png is not None:
-                plot_and_save_xy(x=freqs, y=powers, title=None, 
+                plot_and_save_xy(x=freqs, y=powers, title=png_title, 
                                 folder_path=measurement_folder, xlabel=x_label, ylabel=y_label,
                                 filename=measurement_file_name, show_plot=False)
                 
@@ -112,4 +115,4 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
     avg_smsr=np.mean(smsr_data)
 
     
-    return float(avg_peak_freq), float(avg_peak_power), float(avg_smsr)
+    return {'peak_freq':float(avg_peak_freq), 'peak_power': float(avg_peak_power), 'smsr': float(avg_smsr)}
