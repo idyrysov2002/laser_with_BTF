@@ -4,7 +4,7 @@ from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.calculate_smsr import calculate_smsr
 from scripts.number_with_decimal_prefix import number_with_decimal_prefix
-
+from config import PARAM_LABELS
 def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folder_structure,
                    rf_rbw: float, f_start=None, f_stop=None, 
                    f_span=None, f_center=None, rf_level=-20, save_png=None):
@@ -81,8 +81,8 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
             peak_freqs_data.append(peak_freq)
             smsr_data.append(smsr)
     
-            x_label = 'Frequency (GHz)'
-            y_label = 'Power (dBm)'
+            x_label = PARAM_LABELS['frequensy_GHz']
+            y_label = PARAM_LABELS['power_dBm']
             
             
             # перевод на ГГц

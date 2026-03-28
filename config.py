@@ -13,6 +13,7 @@ MEGA = 1e+6
 KILO = 1e+3
 MILLI = 1e-3
 MICRO = 1e-6
+
 NANO = 1e-9
 PICO = 1e-12
 
@@ -88,4 +89,18 @@ PARAM_NAMES = {
     "delay": "delay",
     "linewidth": "linewidth",
     "wavelength": "wavelength",
+}
+
+PARAM_LABELS = {
+    'frequensy_GHz': 'Frequency, GHz',
+    'current_mA': 'Current, mA',
+    'delay_ps': 'Delay, ps',
+    'power_dBm':'Power, dBm',
+    'wavelength_nm': "Wavelength, nm",
+    'intensity_dBm': "Intensity, dBm",
+    'time_ns': "Time, ns",
+    'voltage_V': "Voltage, V",
+
+
+
 }

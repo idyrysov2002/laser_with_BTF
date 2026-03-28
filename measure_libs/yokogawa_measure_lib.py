@@ -4,6 +4,7 @@ from typing import Tuple, Optional
 from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.create_folder import create_multiple_subfolders
+from config import PARAM_LABELS
 
 def yoko_measurement(device, save_folder_path: str, filename: str, folder_structure: str,
                    res: float,
@@ -32,8 +33,8 @@ def yoko_measurement(device, save_folder_path: str, filename: str, folder_struct
 
     # Записываем данные в .txt файл
 
-    x_label = "Wavelength (nm)"
-    y_label = "Intensity (dBm) "
+    x_label = PARAM_LABELS['wavelength_nm']
+    y_label = PARAM_LABELS['intensity_dBm']
     save_list_x=[wave_arr,x_label]
     save_list_y=[ampl_arr,y_label]
 

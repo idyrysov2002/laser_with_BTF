@@ -5,6 +5,7 @@ import os
 def read_txt_xyz(full_path, header=1):
     """
     Читает txt файл с тремя столбцами.
+    Тип возвращаемого значения: tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]
     """
     if not os.path.exists(full_path):
         print(f"Ошибка: Файл не найден по пути {full_path}")

@@ -5,8 +5,8 @@ from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.create_folder import create_subfolder, create_multiple_subfolders
 from scripts.number_with_decimal_prefix import number_with_decimal_prefix
-from config import OSC_MODES
-from config import OSC_HOR_SCALES
+from config import OSC_MODES, PARAM_LABELS, GIGA, OSC_HOR_SCALES
+
 
 
 def oscilloscope_measurement(device, save_folder_path, filename, folder_structure="folder_1/folder_2", channel=4, save_png=None):
@@ -47,18 +47,18 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
                         )
             
             
-            header_1=f'Value {stats['value_GHz']}'
-            header_2=f'Mean {stats['mean_GHz']}'
-            header_3=f'Min {stats['min_GHz']}'
-            header_4=f'Max {stats['max_GHz']}'
-            header_5=f'St Dev {stats['stddev_GHz']}'
-            header_6=f'Count {stats['count']}'
+            header_1=f'Value, GHz\t{stats['value_GHz']}'
+            header_2=f'Mean, GHz\t{stats['mean_GHz']}'
+            header_3=f'Min, GHz\t{stats['min_GHz']}'
+            header_4=f'Max, GHz\t{stats['max_GHz']}'
+            header_5=f'St Dev, GHz\t{stats['stddev_GHz']}'
+            header_6=f'Count\t{stats['count']}'
             header_lines=[header_1,header_2,header_3,header_4,header_5,header_6]
 
             # Перевод на ns
-            time_arr = time_arr * 1e9
-            x_label = "Time (ns)"
-            y_label = "Voltage (V)"
+            time_arr = time_arr * GIGA
+            x_label = PARAM_LABELS['time_ns']
+            y_label = PARAM_LABELS['voltage_V']
 
             save_list_x = [time_arr, x_label]
             save_list_y = [voltage_arr, y_label]
