@@ -28,7 +28,7 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
             measurement_folder = create_multiple_subfolders(parent_folder=save_folder_path,folder_structure=new_folder_structure)
 
             # Формируем имя файла
-            osc_filename = f"{mode}_hor_scale_{scale_prefix}s_{filename}"
+            osc_filename = f"oscillogram_{mode}_hor_scale_{scale_prefix}s_{filename}"
 
             # Получение данных
             time_arr, voltage_arr = device.get_oscilloscope_data(channel=channel)
@@ -42,16 +42,16 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
                         f"Mean: {stats['mean_GHz']:.2f}GHz, "
                         f"Min: {stats['min_GHz']:.2f}GHz, "
                         f"Max: {stats['max_GHz']:.2f}GHz, "
-                        f"St Dev: {stats['stddev_GHz']:.2f}GHz, "
+                        f"St Dev: {stats['std_GHz']:.2f}GHz, "
                         f"Count: {stats['count']}"
                         )
             
             
-            header_1=f'Value, GHz\t{stats['value_GHz']}'
-            header_2=f'Mean, GHz\t{stats['mean_GHz']}'
-            header_3=f'Min, GHz\t{stats['min_GHz']}'
-            header_4=f'Max, GHz\t{stats['max_GHz']}'
-            header_5=f'St Dev, GHz\t{stats['stddev_GHz']}'
+            header_1=f'Value_GHz\t{stats['value_GHz']}'
+            header_2=f'Mean_GHz\t{stats['mean_GHz']}'
+            header_3=f'Min_GHz\t{stats['min_GHz']}'
+            header_4=f'Max_GHz\t{stats['max_GHz']}'
+            header_5=f'St_Dev_GHz\t{stats['std_GHz']}'
             header_6=f'Count\t{stats['count']}'
             header_lines=[header_1,header_2,header_3,header_4,header_5,header_6]
 

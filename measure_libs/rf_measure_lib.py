@@ -61,8 +61,8 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
             # Получение данных
             freqs, powers = rf_device.get_rf()
             
-            # удаляем первые 3 точки
-            freqs, powers=freqs[10:], powers[10:]
+            # # удаляем первые точки
+            # freqs, powers=freqs[10:], powers[10:]
             
             
             

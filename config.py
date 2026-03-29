@@ -100,7 +100,84 @@ PARAM_LABELS = {
     'intensity_dBm': "Intensity, dBm",
     'time_ns': "Time, ns",
     'voltage_V': "Voltage, V",
+    'pm_400_mW': 'Power, mW',
+    'smsr_dB': 'SMSR, dB'
 
 
 
+}
+
+map_data_buf={
+    'pm_400':
+        {
+        'data':'',
+        'label': PARAM_LABELS['pm_400_mW'],
+        'title': '',
+        'filename': 'power_meter'
+        },
+
+    'rf_freq_max':
+        {
+        'data':'',
+        'label':PARAM_LABELS['frequensy_GHz'],
+        'title': '',
+        'filename': ''
+        },
+    'rf_freq_mid':
+        {
+        'data':'',
+        'label':PARAM_LABELS['frequensy_GHz'],
+        'title': '',
+        'filename': ''
+        },
+    'rf_freq_min':
+        {
+        'data':'',
+        'label':PARAM_LABELS['frequensy_GHz'],
+        'title': '',
+        'filename': ''
+        },
+    'rf_smsr_max':
+        {
+        'data':'',
+        'label':PARAM_LABELS['smsr_dB'],
+        'title': '',
+        'filename': ''
+        },
+    'osc_mean_freq':
+        {
+        'data':'',
+        'label':PARAM_LABELS['frequensy_GHz'],
+        'title': '',
+        'filename': ''
+        },
+    'osc_std_freq':
+        {
+        'data':'',
+        'label':PARAM_LABELS['frequensy_GHz'],
+        'title': '',
+        'filename': ''
+        },
+}
+
+
+data_collection={
+    'pm_400':{
+        'data': None,
+        'unit': 'mW',
+        
+            },
+    'rf_peak_freq_max':{
+        'data': None,
+        'unit': "GHz",
+
+        
+            },
+    'rf_peak_freq_mid':{
+        'data': None,
+        'unit': 'GHz',
+        'title': 'rf_peak_freq_mid'
+            },
+
+    
 }

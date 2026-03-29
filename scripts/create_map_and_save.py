@@ -97,7 +97,7 @@ def create_map_and_save(x_arr, y_arr, z_arr, title=None, folder_path=None, filen
     vmin = np.nanmin(map_matrix)
     vmax = np.nanmax(map_matrix)
 
-    contour = plt.contourf(X, Y, map_matrix, vmin=vmin, vmax=vmax,cmap="viridis")
+    contour = plt.contourf(X, Y, map_matrix,vmin=vmin, vmax=vmax, cmap="viridis")
     if title:
         plt.title(title, fontsize=FONT_SIZE_TITLE_TEXT, fontname=FONT_FAMILY)
     

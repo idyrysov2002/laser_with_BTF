@@ -40,48 +40,6 @@ middle_span = f'span_{number_with_decimal_prefix(RF_SPAN_MIDDLE)}Hz'
 min_span = f'span_{number_with_decimal_prefix(RF_SPAN_MIN)}Hz'
 delay_check_points = {DELAYS[0], DELAYS[len(DELAYS) // 2], DELAYS[-1]}
 
-# ============================================================
-# Функция для построение 6 карт для одного напряжения
-# ============================================================
-
-
-def build_voltage_maps(voltage, main_folder, data_buf, wavelength):
-    """Внутренняя функция: строит 6 тепловых карт для заданного напряжения."""
-    
-    
-    # Фильтруем данные по напряжению
-    mask = np.array(data_buf['voltage']) == voltage
-    
-    # Папка для карт этого напряжения
-    plot_subfolder = Path(main_folder) / f"maps/wavelength_{wavelength}nm/voltage_{voltage}V"
-    plot_subfolder.mkdir(parents=True, exist_ok=True)
-    
-    # Данные для осей
-    x = np.array(data_buf['current'])[mask]
-    y = np.array(data_buf['delay'])[mask]
-    
-    # === Конфигурация карт (6 карт: freq + amplitude для каждого span) ===
-    # rf_freq_* в Hz, нужно перевести в GHz (делим на 1e+9)
-    maps_config = [
-        (np.array(data_buf['rf_peak_freq_max']) / 1e+9, f'rf_peak_freq_{max_span}', 'Frequency (GHz)', max_span),
-        (data_buf['rf_peak_power_max'], f'rf_peak_power_{max_span}', 'Peak Power (dBm)', max_span),
-        (data_buf['pm_400'], f'power_meter', 'Power, mW',''),
-        (data_buf['rf_smsr_max'], f'rf_smsr_{max_span}', 'SMSR (dB)', max_span),
-        (data_buf['osc_mean_freq'], f"osc_mean_freq_{OSC_MODES}_hor_scale_{number_with_decimal_prefix(OSC_HOR_SCALES)}s",'Frequency (GHz)', ''),
-        (data_buf['osc_std'], f"osc_std_{OSC_MODES}_hor_scale_{number_with_decimal_prefix(OSC_HOR_SCALES)}s",'Frequency (GHz)', '')
-    ]
-    
-    for z_raw, fname_suffix, z_label, span_label in maps_config:
-        z = np.array(z_raw)[mask]
-        create_map_and_save(
-            x_arr=[x.tolist(), "Current (mA)"],
-            y_arr=[y.tolist(), "Delay (ps)"],
-            z_arr=[z.tolist(), z_label],
-            title=f"Voltage {voltage}V, ({span_label})",
-            folder_path=plot_subfolder,
-            filename=f"{fname_suffix}",
-            show_plot=False  
-        )
 
 
 def main():
@@ -114,13 +72,7 @@ def main():
 
             params = itertools.product(VOLTAGES, CURRENTS, DELAYS)
 
-            # === Буфер для сбора данных ===
-            collected_data = {
-                'voltage': [], 'current': [], 'delay': [],
-                'rf_peak_freq_max': [], 'rf_peak_power_max': [],
-                'pm_400': [],
-                'rf_smsr_max': [],'osc_mean_freq':[], "osc_std":[]
-            }
+            
             
             current_voltage_batch = None
             
@@ -128,7 +80,10 @@ def main():
             current_prev = -1
             delay_prev = -1
             
-            
+            pm_power_data=[]
+            rf_peak_freq_max_data=[]
+            rf_smsr_max_data=[]
+
             
 
             for idx, (voltage, current, delay) in enumerate(params, 1):
@@ -136,10 +91,7 @@ def main():
                 base_folder_structure=f"wavelength_{wavelength}nm/voltage_{voltage}V/current_{current}mA"
                 base_filename=f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V_wavelength_{wavelength}nm' 
 
-                # === Построение карт при смене напряжения ===
-                if current_voltage_batch is not None and voltage != current_voltage_batch:
-                    build_voltage_maps(current_voltage_batch, main_folder, collected_data, wavelength)
-                current_voltage_batch = voltage
+               
                 
                 
                 
@@ -166,7 +118,9 @@ def main():
                 
 
                 # === ИЗМЕРЕНИЯ ===
-                pm_power = measure_average_power(pm_device)
+                pm_power_data.append(measure_average_power(pm_device))
+
+                
 
 
                 
@@ -179,16 +133,7 @@ def main():
                 rf_peak_freq_max=rf_max_dict["peak_freq"]
                 rf_peak_power_max=rf_max_dict["peak_power"]
                 rf_smsr_max=rf_max_dict['smsr']
-                # rf_freq_mid, rf_amplitude_mid ,rf_smsr_mid = rf_measurement(
-                #     rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                #     filename=base_filename, rf_rbw=RF_RBW_MIDDLE,
-                #     f_span=RF_SPAN_MIDDLE, f_center=rf_freq_max, save_png=True)
-
                 
-                # rf_freq_min, rf_amplitude_min, rf_smsr_min = rf_measurement(
-                #     rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                #     filename=base_filename, rf_rbw=RF_RBW_MIN,
-                #     f_center=rf_freq_mid, f_span=RF_SPAN_MIN, save_png=True)
 
                 osc_dict=oscilloscope_measurement(device=osc, save_folder_path=main_folder, filename=base_filename, folder_structure=base_folder_structure, channel=4, save_png=True)
                 osc_key = (OSC_MODES,OSC_HOR_SCALES)
@@ -210,31 +155,15 @@ def main():
 
 
                 # === Заполнение буфера для карт ===
-                map_data_buf['pm_400']['data'] = pm_power
+                map_data_buf['pm_400']['data'] = pm_power_data
+                map_data_buf['pm_400']['title']=None
+                map_data_buf['pm_400']['filename']='power_meter_heatmap'
 
-                collected_data['voltage'].append(voltage)
-                collected_data['current'].append(current)
-                collected_data['delay'].append(delay)
-                collected_data['rf_peak_freq_max'].append(rf_peak_freq_max)
-                collected_data['rf_peak_power_max'].append(rf_peak_power_max)
-                collected_data['pm_400'].append(pm_power)
-                collected_data['rf_smsr_max'].append(rf_smsr_max)
-                collected_data['osc_mean_freq'].append(osc_mean_freq_GHz)
-                collected_data['osc_std'].append(osc_std_GHz)
-
+                map_data_buf['rf_freq_max']['data']=rf_peak_freq_max_data
+                map_data_buf['rf_freq_max']['title']=f'Voltage {voltage}V, Frequensy(Peak power), {max_span}'
+                map_data_buf['rf_freq_max']['filename']=f'{max_span}_voltage_{voltage}V'
                 
 
-                
-                # collected_data['rf_freq_mid'].append(rf_freq_mid)
-                # collected_data['rf_peak_amplitude_mid'].append(rf_amplitude_mid)
-                # collected_data['rf_freq_min'].append(rf_freq_min)
-                # collected_data['rf_peak_amplitude_min'].append(rf_amplitude_min)
-                
-
-            
-            # === Построение карт для ПОСЛЕДНЕГО напряжения ===
-            if current_voltage_batch is not None:
-                build_voltage_maps(current_voltage_batch, main_folder, collected_data, wavelength)
     finally:
         try:
             osc.disconnect()
