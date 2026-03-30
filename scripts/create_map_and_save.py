@@ -55,7 +55,7 @@ def create_map_and_save(x_arr, y_arr, z_arr, title=None, folder_path=None, filen
                 file.write(txt_header + "\n")
                 for xi, yi, zi in zip(current_values, delay_values, map_values):
                     file.write(f"{xi}\t{yi}\t{zi}\n")
-            print(f"Данные успешно сохранены в:{txt_path}")
+            print(f"\nДанные успешно сохранены в:{txt_path}")
         except Exception as e:
             print(f"Ошибка сохранения TXT: {e}")
     
@@ -117,7 +117,7 @@ def create_map_and_save(x_arr, y_arr, z_arr, title=None, folder_path=None, filen
     if png_path is not None:
         try:
             plt.savefig(png_path, dpi=300, bbox_inches='tight')
-            print(f"График сохранён: {png_path}")
+            print(f"\nГрафик сохранён: {png_path}")
         except Exception as e:
             print(f"Ошибка сохранения графика: {e}")
     
