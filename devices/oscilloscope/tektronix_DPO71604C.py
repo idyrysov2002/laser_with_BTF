@@ -310,7 +310,7 @@ class Oscilloscope:
                 'mean_GHz': mean/1e+9,
                 'min_GHz': min_val/1e+9,
                 'max_GHz': max_val/1e+9,
-                'stddev_GHz': stddev/1e+9,
+                'std_GHz': stddev/1e+9,
                 'count': count
             }
             

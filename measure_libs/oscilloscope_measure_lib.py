@@ -47,12 +47,12 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
                         )
             
             
-            header_1=f'Value_GHz\t{stats['value_GHz']}'
-            header_2=f'Mean_GHz\t{stats['mean_GHz']}'
-            header_3=f'Min_GHz\t{stats['min_GHz']}'
-            header_4=f'Max_GHz\t{stats['max_GHz']}'
-            header_5=f'St_Dev_GHz\t{stats['std_GHz']}'
-            header_6=f'Count\t{stats['count']}'
+            header_1 = f"Value_GHz\t{stats['value_GHz']}"
+            header_2=f"Mean_GHz\t{stats['mean_GHz']}"
+            header_3=f"Min_GHz\t{stats['min_GHz']}"
+            header_4=f"Max_GHz\t{stats['max_GHz']}"
+            header_5=f"St_Dev_GHz\t{stats['std_GHz']}"
+            header_6=f"Count\t{stats['count']}"
             header_lines=[header_1,header_2,header_3,header_4,header_5,header_6]
 
             # Перевод на ns
@@ -85,11 +85,9 @@ def oscilloscope_measurement(device, save_folder_path, filename, folder_structur
                     show_plot=False,
                 )
             # Сохраняем результат в словарь
-            key = (mode, hor_scale)
-            results[key] = {'stats': stats}
 
-    return results
+    return stats
 
-        
+    
             
             

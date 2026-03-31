@@ -36,9 +36,10 @@ RF_RBW_MIN=1*KILO
 
 NUMBER_RF_MEASURE=1
 
-VOLTAGES=[0,1,2,3,4,5] # в V
-DELAYS=np.arange(0, 301, 5) # в ps
-CURRENTS=np.arange(300, 401, 100) # в mA
+
+VOLTAGES=[0, 1,2,3,4,5] # в V
+DELAYS=np.arange(0, 331, 10) # в ps
+CURRENTS=np.arange(100, 301, 50) # в mA
 WAVELENGTH=[1530, 1540, 1550, 1560] # в nm
 # LINEWIDTH=[1,2,18] # в nm
 
