@@ -67,8 +67,7 @@ def build_voltage_maps(voltage, main_folder, data_buf, wavelength):
         (data_buf['rf_peak_power_max'], f'rf_peak_power_{max_span}', 'Peak Power (dBm)', max_span),
         (data_buf['pm_400'], f'power_meter', 'Power, mW',''),
         (data_buf['rf_smsr_max'], f'rf_smsr_{max_span}', 'SMSR (dB)', max_span),
-        (data_buf['osc_mean_freq'], f"osc_mean_freq_{OSC_MODES}_hor_scale_{number_with_decimal_prefix(OSC_HOR_SCALES)}s",'Frequency (GHz)', ''),
-        (data_buf['osc_std'], f"osc_std_{OSC_MODES}_hor_scale_{number_with_decimal_prefix(OSC_HOR_SCALES)}s",'Frequency (GHz)', '')
+       
     ]
     
     for z_raw, fname_suffix, z_label, span_label in maps_config:
@@ -106,7 +105,7 @@ def main():
         osc=Oscilloscope(ip="10.2.60.150", port=4000)
         osc.trigger_level(challel=4,level=-0.050)
 
-        yoko=YokogawaOSA()
+        # yoko=YokogawaOSA()
 
         for wavelength in WAVELENGTH:
             # Установка длины волны
@@ -119,7 +118,7 @@ def main():
                 'voltage': [], 'current': [], 'delay': [],
                 'rf_peak_freq_max': [], 'rf_peak_power_max': [],
                 'pm_400': [],
-                'rf_smsr_max': [],'osc_mean_freq':[], "osc_std":[]
+                'rf_smsr_max': [],
             }
             
             current_voltage_batch = None
@@ -134,7 +133,8 @@ def main():
             for idx, (voltage, current, delay) in enumerate(params, 1):
 
                 base_folder_structure=f"wavelength_{wavelength}nm/voltage_{voltage}V/current_{current}mA"
-                base_filename=f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V_wavelength_{wavelength}nm' 
+                base_filename=f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V_wavelength_{wavelength}nm'
+                base_title_name=f'wavelength_{wavelength}nm, voltage_{voltage}V,current_{current}mA, delay_{delay}ps' 
 
                 # === Построение карт при смене напряжения ===
                 if current_voltage_batch is not None and voltage != current_voltage_batch:
@@ -191,22 +191,20 @@ def main():
                 #     f_center=rf_freq_mid, f_span=RF_SPAN_MIN, save_png=True)
 
                 osc_dict=oscilloscope_measurement(device=osc, save_folder_path=main_folder, filename=base_filename, folder_structure=base_folder_structure, channel=4, save_png=True)
-                osc_key = (OSC_MODES,OSC_HOR_SCALES)
-                item = osc_dict[osc_key]
-                osc_mean_freq_GHz = item['stats']['mean_GHz']
-                osc_std_GHz=item['stats']['stddev_GHz']
+        
+                
 
                 
-                if delay in delay_check_points:
-                    yoko_dict=yoko_measurement(
-                    device=yoko,
-                    save_folder_path=main_folder, 
-                    filename=base_filename,
-                    folder_structure=base_folder_structure,
-                    res=YOKO_RES_BIG_SPAN,
-                    wave_start=YOKO_BIG_SPAN_START,
-                    wave_stop=YOKO_BIG_SPAN_STOP,
-                    save_png=True)
+                # if delay in delay_check_points:
+                #     yoko_dict=yoko_measurement(
+                #     device=yoko,
+                #     save_folder_path=main_folder, 
+                #     filename=base_filename,
+                #     folder_structure=base_folder_structure,
+                #     res=YOKO_RES_BIG_SPAN,
+                #     wave_start=YOKO_BIG_SPAN_START,
+                #     wave_stop=YOKO_BIG_SPAN_STOP,
+                #     save_png=True)
 
 
                 # === Заполнение буфера для карт ===
@@ -219,8 +217,8 @@ def main():
                 collected_data['rf_peak_power_max'].append(rf_peak_power_max)
                 collected_data['pm_400'].append(pm_power)
                 collected_data['rf_smsr_max'].append(rf_smsr_max)
-                collected_data['osc_mean_freq'].append(osc_mean_freq_GHz)
-                collected_data['osc_std'].append(osc_std_GHz)
+                
+                
 
                 
 
