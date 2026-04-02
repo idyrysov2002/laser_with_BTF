@@ -1,0 +1,394 @@
+{
+  "1530": {
+    "0": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_0V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_0V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_0V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_0V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "1": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_1V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_1V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_1V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_1V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_2V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_2V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_2V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_2V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "3": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_3V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_3V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_3V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_3V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "4": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_4V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_4V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_4V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_4V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "5": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_5V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_5V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1530nm/voltage_5V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_5V_wavelength_1530nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "1540": {
+    "0": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_0V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_0V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_0V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_0V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "1": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_1V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_1V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_1V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_1V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_2V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_2V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_2V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_2V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "3": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_3V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_3V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_3V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_3V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "4": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_4V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_4V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_4V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_4V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "5": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_5V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_5V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1540nm/voltage_5V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_5V_wavelength_1540nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "1550": {
+    "0": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_0V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_0V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_0V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_0V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "1": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_1V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_1V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_1V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_1V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_2V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_2V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_2V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_2V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "3": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_3V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_3V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_3V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_3V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "4": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_4V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_4V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_4V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_4V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "5": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_5V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_5V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1550nm/voltage_5V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_5V_wavelength_1550nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "1560": {
+    "0": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_0V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_0V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_0V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_0V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "1": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_1V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_1V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_1V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_1V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_2V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_2V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_2V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_2V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "3": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_3V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_3V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_3V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_3V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "4": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_4V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_4V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_4V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_4V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    },
+    "5": {
+      "1": {
+        "6.2": {
+          "files": [
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_5V/current_300mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_300mA_voltage_5V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            },
+            {
+              "delay": 0,
+              "path": "wavelength_1560nm/voltage_5V/current_400mA/span_6.2GHz/measurement_number_1/rf_spectrum_delay_0ps_current_400mA_voltage_5V_wavelength_1560nm_span_6.2GHz_measurement_number_1.txt"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

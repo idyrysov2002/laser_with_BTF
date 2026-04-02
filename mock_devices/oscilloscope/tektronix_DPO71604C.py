@@ -1,191 +1,128 @@
-
+import socket
 import numpy as np
 import matplotlib.pyplot as plt
 import time
 import os
-def generate_oscilloscope_spectrum():
-    """
-    Генерирует случайный синусоидальный сигнал (осциллограмму). 
 
-    Returns:
-        x (np.ndarray): Ось времени/точек.
-        y (np.ndarray): Значения сигнала.
-    """
-    # Длина сигнала
-    length = 50
-    x = np.arange(length)
-
-    # Случайные параметры
-    amplitude = np.random.uniform(1.0, 10.0)  # Амплитуда
-    frequency = np.random.uniform(0.01, 0.15)  # Частота (циклов на точку)
-    phase = np.random.uniform(0, 2 * np.pi)  # Фаза (в радианах)
-
-    # Генерация синусоиды
-    y = amplitude * np.sin(2 * np.pi * frequency * x + phase)
-
-    return x, y
 
 class Oscilloscope:
     def __init__(self, ip, port):
-        self.ip = ip
-        self.port = port
-        self.sock = None
-        self.connect()
+        print(f'Oscilloscope подключен, IP={ip}, port={port}')
         
-    def connect(self):
-        """Установка соединения с осциллографом"""
-        print(f"Соединение установлено с {self.ip}:{self.port}")
-
-    
-    
-    
+    def generate_osc_data():
+        # Параметры
+        n_points = 1000
+        duration_ns = 10.0  # Длительность 10 нс, как на ваших графиках
+        
+        # Случайная частота от 1 до 6 ГГц
+        freq_hz = np.random.uniform(1e9, 6e9)
+        
+        # Случайная фаза от 0 до 2*pi
+        phase_rad = np.random.uniform(0, 2 * np.pi)
+        
+        # Массив времени (в секундах для расчета, но отображать будем в нс)
+        time_arr = np.linspace(0, duration_ns * 1e-9, n_points)
+        
+        # Генерация синуса
+        voltage_arr = np.sin(2 * np.pi * freq_hz * time_arr + phase_rad)
+        
+        return time_arr, voltage_arr
+        
+        
+    def disconnect(self):
+        print("Разрыв соединения с осциллографом")
+        
     def sample_rate(self, rate):
-        """Устанавливает частоту дискретизации осциллографа
-        
-        """
-        rate=str(rate)
-        return self.send_command(f"HORIZONTAL:MODE:SAMPLERATE {rate}", False)
+        print(f'sample_rate_{rate}')
         
     
-        
     def acquire_mode(self, mode):
-        """Устанавливает режим захвата сигнала."""
-        print(f'acquire_mode={mode}')    
+       print(f'acquire_mode_{mode}')   
     
     def offset(self, channel, voltage):
-        voltage=str(voltage)
-        
-        return self.send_command(f"CH{channel}:OFFSET {voltage}", False)
+        print(f"offset_channel_{channel}_voltage{voltage}V")
     
     def horizontal_scale(self, scale):
-        """Устанавливает масштаб горизонтальной развертки"""
-        print(f'horizontal_scale= {scale}')
-    
-    # def horizontal_recordlength(self, length):
-    #     """Устанавливает длину записи (количество точек) для горизонтальной развертки.
-    #     """
-    #     # length=str(length)
-    #     self.send_command("HORizontal:ACQLENGTH?", delay=0.1)
-    #     return self.send_command(f"HORIZONTAL:MODE:RECORDLENGTH {length}", False)
+        print(f'horizontal_scale_{scale}V')
     
     def horizontal_recordlength(self, length):
-        """
-        Устанавливает длину записи (количество точек) для горизонтальной развертки.
-        """
-        # Преобразуем в строку и отправляем команду согласно мануалу:
-        # HORizontal:MODE:RECOrdlength <NR1>
-        return self.send_command(f"HORizontal:MODE:RECOrdlength {int(length)}", False)
+        print(f"horizontal_recordlength_{length}")
+        
     
     def acquire_state(self, run):
-        """Управляет состоянием захвата сигнала.
-        
-        Args:
-            run (str): Команда управления. Допустимые значения:
-                - 'ON'/'OFF' - включить/выключить захват
-                - 'RUN' - начать захват
-                - 'STOP' - остановить захват
-        
-        Returns:
-            Ответ осциллографа или None, если read_response=False
-        
-        Raises:
-            ValueError: Если передан недопустимый параметр
-        """
-        valid_states = ['ON', 'OFF', 'RUN', 'STOP']
-        if run.upper() not in valid_states:
-            raise ValueError(f"Invalid state. Valid states are: {', '.join(valid_states)}")
-        
-        return self.send_command(f"ACQUIRE:STATE {run.upper()}", False)
+        print(f"acquire_state_{run}")
        
     def vertical_scale(self,channel,scale):
-        channel=str(channel)
-        scale=str(scale)
-        
-        return self.send_command(f"CH{channel}:SCALE {scale}", False) 
+        print(f'vertical_scale_channel_{channel}_scale_{scale}')
+         
 
     def get_oscilloscope_data(self, channel):
-
-        time_axis, voltage = generate_oscilloscope_spectrum()
-        print("get_oscilloscope_data")
+        time_axis, voltage=self.generate_osc_data()
         return time_axis, voltage
-    
-    
 
     
     def trigger_level(self,challel,level):
-        challel=str(challel)
-        level=str(level)
-        self.send_command("TRIGGER:A:MODE AUTO", False)  # Режим AUTO для гарантированного захвата
-        self.send_command(f"TRIGGER:A:EDGE:SOURCE CH{challel}", False)
-        self.send_command(f"TRIGGER:A:LEVEL {level}", False)  # Уровень триггера в 0V
-        
-        return
+        print(f'trigger_level_challel_{challel}_level_{level}')
 
     def reset_settings(self):
+        print('reset_settings')
        
-        return  self.send_command("*RST", False)
+        
     
     def select_channel(self, channel, state):
-        """Управляет видимостью (включением/выключением) канала осциллографа.
+        print(f'select_channel_{channel}_state_{state}')
         
-        Args:
-            channel (int): Номер канала (например, 1, 2, 3, 4).
-            state (str): Состояние канала. Допустимые значения: 'ON' или 'OFF'.
-            
-        Returns:
-            None: Команда отправляется без ожидания ответа от прибора.
-            
-        Raises:
-            ValueError: Если передано недопустимое состояние.
-            TypeError: Если номер канала не является целым числом.
-        """
-        # Проверка типа канала
-        if not isinstance(channel, int) or channel < 1:
-            raise TypeError("Номер канала должен быть положительным целым числом.")
-        
-        # Нормализация и проверка состояния
-        valid_states = ['ON', 'OFF']
-        state_upper = str(state).upper()
-        
-        if state_upper not in valid_states:
-            raise ValueError(f"Недопустимое состояние '{state}'. Используйте: {', '.join(valid_states)}")
-        
-        # Формирование и отправка команды (например: SELECT:CH1 ON)
-        return self.send_command(f"SELECT:CH{channel} {state_upper}", False)
 
     def trigger_mode(self,mode):
-        """_summary_
+       print(f"trigger_mode_{mode}")
 
-        Args:
-            mode (_str_): {auto|normal}
-
-
-        Returns:
-            _type_: _description_
-        """
-        return self.send_command(f"TRIGGER:A:MODE {mode}", False)
     def data_range(self,start,stop):
-        self.send_command(f"DATA:START {start}", False)
-        self.send_command(f"DATA:STOP {stop}", False)
-        return
+        pass
     def horizontal_position(self,channel,value):
-        """_summary_
-
-        Args:
-            channel (_int_): выбираем канал
-            value (_type_): значения от 0 до 100
-
-        Returns:
-            _type_: _description_
-        """
-        return self.send_command(f'REF{channel}:HORizontal:POSition {value}')
+        pass
 
     def average_number_point(self, number):
-        return self.send_command(f"ACQUIRE:NUMAVG {number}", False)
+        pass
 
     def waiting_status(self):
-        return self.send_command("*OPC?",False)
+        pass
     
+    def measure_freq_stats(self, channel):
+        """
+        Имитирует измерение частоты со статистикой для тестирования.
+        Возвращает случайные данные в диапазоне 1-6 ГГц и фиксированный счетчик 50.
+        
+        Args:
+            channel (int): Номер канала (1-4) - используется только для логирования, если нужно
+        
+        Returns:
+            dict: Словарь со сгенерированной статистикой
+        """
+        
+        # Диапазон частот 1-6 ГГц (в Герцах для внутренних расчетов)
+        f_min = 1e9
+        f_max = 6e9
+        
+        # Генерируем случайные значения для статистики в этом диапазоне
+        # Создаем виртуальный набор из 50 измерений для корректного расчета mean/std/min/max
+        virtual_measurements = np.random.uniform(f_min, f_max, 50)
+        
+        value = np.random.uniform(f_min, f_max)       # Текущее значение (случайное)
+        mean_val = np.mean(virtual_measurements)      # Среднее
+        min_val = np.min(virtual_measurements)        # Минимум
+        max_val = np.max(virtual_measurements)        # Максимум
+        stddev_val = np.std(virtual_measurements)     # Стандартное отклонение
+        count = 50                                    # Фиксированное число измерений
+        
+        return {
+            'value_GHz': value / 1e9,
+            'mean_GHz': mean_val / 1e9,
+            'min_GHz': min_val / 1e9,
+            'max_GHz': max_val / 1e9,
+            'std_GHz': stddev_val / 1e9,
+            'count': float(count)
+        }
+                
 if __name__=="__main__":
 
     # Настройки
