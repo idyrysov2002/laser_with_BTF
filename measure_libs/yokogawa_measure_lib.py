@@ -9,7 +9,7 @@ from config import PARAM_LABELS
 def yoko_measurement(device, save_folder_path: str, filename: str, folder_structure: str,
                    res: float,
                    wave_start: str, 
-                   wave_stop: str, save_png=None):
+                   wave_stop: str, save_png=True):
     # Формируем новую путь
     new_folder_structure=f'yokogawa_measurements/{folder_structure}'
     new_save_folder_path=create_multiple_subfolders(parent_folder=save_folder_path,folder_structure=new_folder_structure)
@@ -41,7 +41,7 @@ def yoko_measurement(device, save_folder_path: str, filename: str, folder_struct
     write_arrays_txt(
         save_list_x, save_list_y, folder_path=new_save_folder_path, filename=new_filename
     )
-    png_title=f"Wavelength(Peak power): {peak_wave}nm"
+    png_title=f"Peak Power: {peak_intensity:..4f}μW,Wavelength(Peak power): {peak_wave}nm"
     if save_png is not None:
         plot_and_save_xy(
             x=wave_arr,
