@@ -18,11 +18,11 @@ def main():
         folder_prefix='BTF100_contour'
         
         save_folder_path=create_date_folder(base_path=main_path, prefix=folder_prefix)
-        for current in [300, 400, 500]:
+        for current in [400]:
             
             ld.set_current(current=current)
             
-            for linewidth in range(1, 19,1):
+            for linewidth in range(1, 2,1):
                 
                 btf.set_linewidth(linewidth=linewidth)
                 
@@ -30,17 +30,17 @@ def main():
                     
                     btf.set_wavelength(wavelength=wavelengh)
                     
-                    base_file_name=f'wavelengh_{wavelengh}nm_linewidth_{linewidth}nm_current_{current}mA'
-                    base_folder_structure='current_{current}mA/linewidth_{linewidth}nm'
+                    base_file_name=f'SOA_wavelengh_{wavelengh}nm_linewidth_{linewidth}nm_current_{current}mA'
+                    base_folder_structure=f'current_{current}mA/linewidth_{linewidth}nm'
                     
                     yoko_measurement(device=yoko, 
                                     save_folder_path=save_folder_path, 
                                     filename=base_file_name, 
                                     folder_structure=base_folder_structure,
-                                    res=0.02,
-                                    wave_start=1510, 
-                                    wave_stop=1580, 
-                                    save_png=None)
+                                    res=0.05,
+                                    wave_start=1350, 
+                                    wave_stop=1700, 
+                                    save_png=True)
     finally:
         yoko.close_connect()
         
