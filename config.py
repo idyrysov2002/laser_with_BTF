@@ -23,9 +23,9 @@ STABILIZATION_TIME=3
 # НАСТРОЙКИ РАДИОЧАСТОТНИКА
 # ─────────────────────────────────────────────────────────────
 RF_LEVEL=-20
-RF_F_START_MAX = 9e3
+RF_F_START_MAX = 0.2e+9
 RF_F_STOP_MAX = 6.2e+9
-RF_SPAN_MAX=6.2*GIGA
+RF_SPAN_MAX=6*GIGA
 RF_RBW_MAX=1*MEGA
 
 RF_SPAN_MIDDLE=100*MEGA
