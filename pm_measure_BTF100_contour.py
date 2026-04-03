@@ -38,15 +38,15 @@ def main():
                 plot_and_save_xy(
                     x=wavelengh_data, 
                     y=pm_data, 
-                    title=f'data from soa, power meter, current {current}mA, linewidth {linewidth}nm', 
+                    title=f'data from filter, power meter, current {current}mA, linewidth {linewidth}nm', 
                     xlabel='Wavelength, nm', 
                     ylabel='Power, mW', 
                   folder_path=save_folder_path, 
-                  filename=f'soa_power_meter_current_{current}mA_linewidth_{linewidth}nm', show_plot=False
+                  filename=f'filter_power_meter_current_{current}mA_linewidth_{linewidth}nm', show_plot=False
                 )
                 x_arr=[wavelengh_data, 'Wavelength, nm']
                 y_arr=[pm_data, 'Power, mW']
-                write_arrays_txt(x_arr, y_arr, folder_path=save_folder_path, filename=f'soa_power_meter_current_{current}mA_linewidth_{linewidth}nm')                 
+                write_arrays_txt(x_arr, y_arr, folder_path=save_folder_path, filename=f'filter_power_meter_current_{current}mA_linewidth_{linewidth}nm')                 
                     
                     
                     
