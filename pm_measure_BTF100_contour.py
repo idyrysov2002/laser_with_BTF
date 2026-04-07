@@ -13,6 +13,7 @@ def main():
         pm_device=PMDevicePM100D()
         
         ld=CLD1015()
+        ld.turn_on_all()
         
         btf=BTF100(port="COM11")
         
@@ -53,7 +54,7 @@ def main():
                     
     finally:
         pm_device.disconnect()
-        
+        ld.turn_off_all()
                     
 if __name__=="__main__":
     main()
