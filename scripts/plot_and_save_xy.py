@@ -4,8 +4,16 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 from matplotlib.ticker import AutoMinorLocator
 
-def plot_and_save_xy(x, y, title, xlabel, ylabel, 
-                  folder_path=None, filename=None, show_plot=False):
+def plot_and_save_xy(
+        x, 
+        y, 
+        title, 
+        xlabel, 
+        ylabel, 
+        folder_path=None, 
+        filename=None, 
+        show_plot=False
+    ):
     """
     Построить график с опциями показа и сохранения.
     
