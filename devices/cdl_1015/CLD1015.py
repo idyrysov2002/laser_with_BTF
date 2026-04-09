@@ -57,8 +57,9 @@ class CLD1015():
 		
 		
 	def turn_on_all(self):
+		time.sleep(3)
 		self.turn_on_tec()
-		time.sleep(2)
+		time.sleep(3)
 		self.turn_on_laser()
 		
 		

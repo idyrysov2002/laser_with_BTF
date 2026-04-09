@@ -16,7 +16,7 @@ def main():
         btf=BTF100(port="COM11")
         
         main_path="Z:/data_for_laser_with_BTF"
-        folder_prefix='coupler_white-blue'
+        folder_prefix='filter'
         
         save_folder_path=create_date_folder(base_path=main_path, prefix=folder_prefix)
         for current in CURRENTS:
@@ -31,7 +31,7 @@ def main():
                     
                     btf.set_wavelength(wavelength=wavelengh)
                     
-                    base_file_name=f'coupler_white-blue_wavelengh_{wavelengh}nm_linewidth_{linewidth}nm_current_{current}mA'
+                    base_file_name=f'filter_wavelengh_{wavelengh}nm_linewidth_{linewidth}nm_current_{current}mA'
                     base_folder_structure=f''
                     yoko_measurement(
                                     device=yoko, 
