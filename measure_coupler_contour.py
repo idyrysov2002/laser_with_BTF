@@ -4,21 +4,22 @@ from devices.cdl_1015.CLD1015 import CLD1015
 from devices.btf_100.btf_100 import BTF100
 from scripts.create_folder import create_date_folder 
 
-
 def main():
+    CURRENTS=[300]
     
     try:
         yoko=YokogawaOSA()
         
         ld=CLD1015()
+        ld.turn_on_all()
         
         btf=BTF100(port="COM11")
         
         main_path="Z:/data_for_laser_with_BTF"
-        folder_prefix='BTF100_contour'
+        folder_prefix='coupler_white-blue'
         
         save_folder_path=create_date_folder(base_path=main_path, prefix=folder_prefix)
-        for current in [400]:
+        for current in CURRENTS:
             
             ld.set_current(current=current)
             
@@ -30,19 +31,17 @@ def main():
                     
                     btf.set_wavelength(wavelength=wavelengh)
                     
-                    base_file_name=f'SOA_wavelengh_{wavelengh}nm_linewidth_{linewidth}nm_current_{current}mA'
-                    base_folder_structure=f'current_{current}mA/linewidth_{linewidth}nm'
-                    
-                    yoko_measurement(device=yoko, 
+                    base_file_name=f'coupler_white-blue_wavelengh_{wavelengh}nm_linewidth_{linewidth}nm_current_{current}mA'
+                    base_folder_structure=f''
+                    yoko_measurement(
+                                    device=yoko, 
                                     save_folder_path=save_folder_path, 
                                     filename=base_file_name, 
                                     folder_structure=base_folder_structure,
-                                    res=0.05,
-                                    wave_start=1350, 
-                                    wave_stop=1700, 
-                                    save_png=True)
+                                    save_png=False)
     finally:
         yoko.close_connect()
+        ld.turn_off_all()
         
                     
 if __name__=="__main__":

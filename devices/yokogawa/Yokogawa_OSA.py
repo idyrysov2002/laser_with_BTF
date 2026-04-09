@@ -21,7 +21,7 @@ class YokogawaOSA:
     def close_connect(self):
         """Сlose the connection"""
         self.device.close()
-        print("Сonnection is closed")
+        print("Yokogawa: Сonnection is closed")
 
     def set_center(self, val):
         """val example: 1550 (nm)"""

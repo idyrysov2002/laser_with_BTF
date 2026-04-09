@@ -19,16 +19,18 @@ class CLD1015():
 	def turn_on_tec(self, temp = 25):
 		self.cld.write('SOUR2:TEMP:SPO {:.2f}'.format(temp))
 		self.cld.write('OUTP2:STAT ON')
+		print('CLD1015: Tec is ON')
 
 	def turn_on_laser(self, current = 50e-3):
 		self.cld.write('OUTP1:STAT ON')
 		self.cld.write('SOUR1:CURR:LEV:AMPL {:.2f}'.format(current))
+		print('CLD1015: laser is ON')
 
 	def set_current(self, current):
 		# перевод мА на А
 		current_mA=current/1000
 		self.cld.write('SOUR1:CURR:LEV:AMPL {:.4f}'.format(current_mA))
-		print(f'Set laser current {current}mA')
+		print(f'CLD1015: Set laser current {current}mA')
 
 	def set_temp(self, temp):
 		self.cld.write('SOUR2:TEMP:SPO {:.2f}'.format(temp))
@@ -36,19 +38,19 @@ class CLD1015():
 
 	def turn_off_tec(self):
 		self.cld.write('OUTP2:STAT OFF')
+		print("CLD1015: Tec is OFF")
 
 	def turn_off_laser(self):
 		self.cld.write('OUTP1:STAT OFF')
+		print("CLD1015: Laser is OFF")
 
 	def turn_off_all(self):
 		self.set_current(0)
-		print('Set current 0')
 		time.sleep(3)
 		self.turn_off_laser()
-		print('Laser is OFF')
 		time.sleep(3)
 		self.turn_off_tec()
-		print('Tec is OFF')
+		
 		self.close()
 		print(self.__class__.__name__, 'closed!')
 		
@@ -56,10 +58,9 @@ class CLD1015():
 		
 	def turn_on_all(self):
 		self.turn_on_tec()
-		print('CLD1015: tec is ON')
 		time.sleep(2)
 		self.turn_on_laser()
-		print('CLD1015: laser is ON')
+		
 		
 if __name__ == "__main__":
 	LD = CLD1015()

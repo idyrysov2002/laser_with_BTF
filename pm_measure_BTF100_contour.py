@@ -39,7 +39,7 @@ def main():
                 plot_and_save_xy(
                     x=wavelengh_data, 
                     y=pm_data, 
-                    title=f'data from filter, power meter, current {current}mA, linewidth {linewidth}nm', 
+                    title=f', power meter, current {current}mA, linewidth {linewidth}nm', 
                     xlabel='Wavelength, nm', 
                     ylabel='Power, mW', 
                   folder_path=save_folder_path, 
