@@ -31,9 +31,8 @@ class PMDevicePM100D():
         self.pm.write('CORR:WAV {}'.format(wl))
         return wl
     
-def measure_average_power(pm_device):
-    duration = 1
-    aver_point = 3
+def measure_average_power(pm_device,duration,aver_point ):
+    
     power_values = []
     for _ in range(aver_point):  
         power = pm_device.get_power()

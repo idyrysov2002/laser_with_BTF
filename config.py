@@ -98,7 +98,7 @@ PARAM_LABELS = {
     'delay_ps': 'Delay, ps',
     'power_dBm':'Power, dBm',
     'wavelength_nm': "Wavelength, nm",
-    'intensity_dBm': "Power, μW",
+    'intensity_dBm': "Power, mW",
     'time_ns': "Time, ns",
     'voltage_V': "Voltage, V",
     'pm_400_mW': 'Power, mW',
