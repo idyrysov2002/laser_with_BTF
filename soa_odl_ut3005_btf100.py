@@ -14,10 +14,17 @@ from devices.pm_400.PMDevice import PMDevicePM100D, measure_average_power
 from measure_libs.oscilloscope_measure_lib import oscilloscope_measurement
 from measure_libs.yokogawa_measure_lib import yoko_measurement
 from pathlib import Path
-import numpy as np
+
 
 # импорт настроек
-from config import* 
+from config import NANO
+from config import RF_SPAN_MAX,RF_SPAN_MID,RF_SPAN_MIN
+from config import LINEWIDTH, WAVELENGTH, VOLTAGES, CURRENTS, DELAYS
+from config import NUMBER_RF_MEASURE
+from config import RF_F_START_MAX,RF_F_STOP_MAX
+from config import RF_RBW_MAX, RF_RBW_MID, RF_RBW_MIN
+
+
 # ===================
 # импорт драйверов
 # ===================
@@ -36,50 +43,73 @@ from devices.oscilloscope.tektronix_DPO71604C import Oscilloscope
 
 # === Определение имён для папок спанов (с Hz) ===
 max_span = f'span_{number_with_decimal_prefix(RF_SPAN_MAX)}Hz'
-middle_span = f'span_{number_with_decimal_prefix(RF_SPAN_MIDDLE)}Hz'
+mid_span = f'span_{number_with_decimal_prefix(RF_SPAN_MID)}Hz'
 min_span = f'span_{number_with_decimal_prefix(RF_SPAN_MIN)}Hz'
-delay_check_points = {DELAYS[0], DELAYS[len(DELAYS) // 2], DELAYS[-1]}
-
-# ============================================================
-# Функция для построение 6 карт для одного напряжения
-# ============================================================
 
 
-def build_voltage_maps(voltage, main_folder, data_buf, wavelength):
-    """Внутренняя функция: строит 6 тепловых карт для заданного напряжения."""
+
+def build_voltage_maps(voltage, linewidth, wavelength, folder_structure, data_buf):
+    """Внутренняя функция тепловых карт для заданного напряжения."""
     
     
-    # Фильтруем данные по напряжению
-    mask = np.array(data_buf['voltage']) == voltage
     
     # Папка для карт этого напряжения
-    plot_subfolder = Path(main_folder) / f"maps/wavelength_{wavelength}nm/voltage_{voltage}V"
-    plot_subfolder.mkdir(parents=True, exist_ok=True)
+    folder_path = Path(folder_structure)
+    if not folder_path.exists():
+        folder_path.mkdir(parents=True, exist_ok=True)
     
     # Данные для осей
-    x = np.array(data_buf['current'])[mask]
-    y = np.array(data_buf['delay'])[mask]
+    x = np.array(data_buf['current'])
+    y = np.array(data_buf['delay'])
     
-    # === Конфигурация карт (6 карт: freq + amplitude для каждого span) ===
-    # rf_freq_* в Hz, нужно перевести в GHz (делим на 1e+9)
+    # === Конфигурация карт ===
     maps_config = [
-        (np.array(data_buf['rf_peak_freq_max']) / 1e+9, f'rf_peak_freq_{max_span}', 'Frequency (GHz)', max_span),
-        (data_buf['rf_peak_power_max'], f'rf_peak_power_{max_span}', 'Peak Power (dBm)', max_span),
-        (data_buf['pm_400'], f'power_meter', 'Power, mW',''),
-        (data_buf['rf_smsr_max'], f'rf_smsr_{max_span}', 'SMSR (dB)', max_span),
-       
+        ('pm_400', 'power_meter', 'Power, mW', ''),
+        (np.array(data_buf['rf_peak_freq_max']) / 1e+9, f'rf_peak_freq_{max_span}', 'Frequency, GHz', max_span),
+        (np.array(data_buf['rf_peak_freq_mid']) / 1e+9, f'rf_peak_freq_{mid_span}', 'Frequency, GHz', mid_span),
+        (np.array(data_buf['rf_peak_freq_min']) / 1e+9, f'rf_peak_freq_{min_span}', 'Frequency, GHz', min_span),
+        ('osc_mean_freq', 'osc_mean_freq', 'Frequency, GHz', ''),
     ]
     
     for z_raw, fname_suffix, z_label, span_label in maps_config:
-        z = np.array(z_raw)[mask]
+        # Обработка PM400
+        if z_raw == 'pm_400':
+            z = np.array(data_buf['pm_400'])
+            create_map_and_save(
+                x_arr=[x.tolist(), "Current, mA"],
+                y_arr=[y.tolist(), "Delay, ps"],
+                z_arr=[z.tolist(), z_label],
+                title=f"PM400: linewidth {linewidth}nm, wavelength {wavelength}nm, voltage {voltage}V",
+                folder_path=folder_path,
+                filename=f"{fname_suffix}",
+                show_plot=False
+            )
+            continue
+        
+        # Обработка осциллографа
+        if z_raw == 'osc_mean_freq':
+            z = np.array(data_buf['osc_mean_freq'])
+            create_map_and_save(
+                x_arr=[x.tolist(), "Current, mA"],
+                y_arr=[y.tolist(), "Delay, ps"],
+                z_arr=[z.tolist(), z_label],
+                title=f"OSC: linewidth {linewidth}nm, wavelength {wavelength}nm, voltage {voltage}V",
+                folder_path=folder_path,
+                filename=f"{fname_suffix}",
+                show_plot=False
+            )
+            continue
+        
+        # Обычные числовые данные
+        z = np.array(z_raw)
         create_map_and_save(
-            x_arr=[x.tolist(), "Current (mA)"],
-            y_arr=[y.tolist(), "Delay (ps)"],
+            x_arr=[x.tolist(), "Current, mA"],
+            y_arr=[y.tolist(), "Delay, ps"],
             z_arr=[z.tolist(), z_label],
-            title=f"Voltage {voltage}V, ({span_label})",
-            folder_path=plot_subfolder,
+            title=f"linewidth {linewidth}nm, wavelength {wavelength}nm, voltage {voltage}V, ({span_label})",
+            folder_path=folder_path,
             filename=f"{fname_suffix}",
-            show_plot=False  
+            show_plot=False
         )
 
 
@@ -87,7 +117,7 @@ def main():
 
 
     try:
-        main_folder = create_date_folder(base_path="Z:/data_for_laser_with_BTF", prefix='laser_with_btf')
+        
         # ========================
         # ИНИЦИАЛИЗАЦИЯ ПРИБОРОВ
         # ========================
@@ -95,7 +125,6 @@ def main():
         pm_device = PMDevicePM100D()
         odl = OpticDelayLine('COM10')
         odl.initialize()
-        # osa = OSA_Yokogawa_new()
         rf_device = RF306B()
         LD = CLD1015()
         LD.turn_on_all()
@@ -103,136 +132,156 @@ def main():
         ut.turn_on()
         
         osc=Oscilloscope(ip="10.2.60.150", port=4000)
-        osc.trigger_level(challel=4,level=-0.050)
+        osc.trigger_level(channel=4,level=-0.050)
+        # Установливаем режим (например, sample, average)
+        osc.acquire_mode(mode='average')
+
+        # Установливаем длительность сигнала
+        osc.duration_time(duration=10*NANO)
 
         # yoko=YokogawaOSA()
 
-        for wavelength in WAVELENGTH:
-            # Установка длины волны
-            btf.set_wavelength(wavelength)
-
-            params = itertools.product(VOLTAGES, CURRENTS, DELAYS)
-
-            # === Буфер для сбора данных ===
-            collected_data = {
-                'voltage': [], 'current': [], 'delay': [],
-                'rf_peak_freq_max': [], 'rf_peak_power_max': [],
-                'pm_400': [],
-                'rf_smsr_max': [],
-            }
-            
-            current_voltage_batch = None
-            
-            voltage_prev = -1
-            current_prev = -1
-            delay_prev = -1
-            
-            
-            
-
-            for idx, (voltage, current, delay) in enumerate(params, 1):
-
-                base_folder_structure=f"wavelength_{wavelength}nm/voltage_{voltage}V/current_{current}mA"
-                base_filename=f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V_wavelength_{wavelength}nm'
-                base_title_name=f'wavelength_{wavelength}nm, voltage_{voltage}V,current_{current}mA, delay_{delay}ps' 
-
-                # === Построение карт при смене напряжения ===
-                if current_voltage_batch is not None and voltage != current_voltage_batch:
-                    build_voltage_maps(current_voltage_batch, main_folder, collected_data, wavelength)
-                current_voltage_batch = voltage
-                
-                
-                
-                
-
-                # === НАСТРОЙКА ОБОРУДОВАНИЯ ===
-                
-                voltage_next = voltage
-                if voltage_prev != voltage_next:
-                    ut.set_voltage(voltage=voltage)
-                    voltage_prev = voltage_next
-                
-                current_next = current
-                if current_prev != current_next:
-                    LD.set_current(current=current)
-                    current_prev = current_next
-                
-                delay_next = delay
-                if delay_prev != delay_next:
-                    odl.set_time_delay(time_delay=delay)
-                    delay_prev = delay_next
-                
-                time.sleep(3)
-                
-
-                # === ИЗМЕРЕНИЯ ===
-                pm_power = measure_average_power(pm_device)
-
-
-                
-                # === Каждый спан в своей папке ===
-                rf_max_dict=rf_measurement(
-                    rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                    filename=base_filename, rf_rbw=RF_RBW_MAX,
-                    f_start=RF_F_START_MAX, f_stop=RF_F_STOP_MAX, save_png=True)
-
-                rf_peak_freq_max=rf_max_dict["peak_freq"]
-                rf_peak_power_max=rf_max_dict["peak_power"]
-                rf_smsr_max=rf_max_dict['smsr']
-                # rf_freq_mid, rf_amplitude_mid ,rf_smsr_mid = rf_measurement(
-                #     rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                #     filename=base_filename, rf_rbw=RF_RBW_MIDDLE,
-                #     f_span=RF_SPAN_MIDDLE, f_center=rf_freq_max, save_png=True)
-
-                
-                # rf_freq_min, rf_amplitude_min, rf_smsr_min = rf_measurement(
-                #     rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                #     filename=base_filename, rf_rbw=RF_RBW_MIN,
-                #     f_center=rf_freq_mid, f_span=RF_SPAN_MIN, save_png=True)
-
-                osc_dict=oscilloscope_measurement(device=osc, save_folder_path=main_folder, filename=base_filename, folder_structure=base_folder_structure, channel=4, save_png=True)
         
-                
 
-                
-                # if delay in delay_check_points:
-                #     yoko_dict=yoko_measurement(
-                #     device=yoko,
-                #     save_folder_path=main_folder, 
-                #     filename=base_filename,
-                #     folder_structure=base_folder_structure,
-                #     res=YOKO_RES_BIG_SPAN,
-                #     wave_start=YOKO_BIG_SPAN_START,
-                #     wave_stop=YOKO_BIG_SPAN_STOP,
-                #     save_png=True)
+        params = itertools.product(LINEWIDTH, WAVELENGTH, VOLTAGES, CURRENTS, DELAYS)
+
+        # === Буфер для сбора данных ===
+        collected_data = {
+            'voltage': [], 'current': [], 'delay': [],
+            'pm_400': [],
+            'rf_peak_freq_max': [], 
+            'rf_peak_freq_mid': [], 
+            'rf_peak_freq_min': [],
+            'osc_mean_freq':[],
+        }
+    
+        
+        voltage_prev = None
+        current_prev = None
+        delay_prev = None
+        linewidth_prev = None
+        wavelength_prev = None
+        
+        main_folder = create_date_folder(base_path="Z:/data_for_laser_with_BTF", prefix='laser_with_btf')
+        for idx, (linewidth, wavelength, voltage, current, delay) in enumerate(params, 1):
+            base_folder_structure = f"linewidth_{linewidth}nm/wavelength_{wavelength}nm/voltage_{voltage}V/current_{current}mA"
+            base_filename = f'delay_{delay}ps_current_{current}mA_voltage_{voltage}V_wavelength_{wavelength}nm_linewidth_{linewidth}nm'
 
 
-                # === Заполнение буфера для карт ===
-                map_data_buf['pm_400']['data'] = pm_power
-
-                collected_data['voltage'].append(voltage)
-                collected_data['current'].append(current)
-                collected_data['delay'].append(delay)
-                collected_data['rf_peak_freq_max'].append(rf_peak_freq_max)
-                collected_data['rf_peak_power_max'].append(rf_peak_power_max)
-                collected_data['pm_400'].append(pm_power)
-                collected_data['rf_smsr_max'].append(rf_smsr_max)
-                
-                
-
-                
-
-                
-                # collected_data['rf_freq_mid'].append(rf_freq_mid)
-                # collected_data['rf_peak_amplitude_mid'].append(rf_amplitude_mid)
-                # collected_data['rf_freq_min'].append(rf_freq_min)
-                # collected_data['rf_peak_amplitude_min'].append(rf_amplitude_min)
-                
-
+            # === НАСТРОЙКА ОБОРУДОВАНИЯ ===
+            linewidth_next = linewidth
+            if linewidth_prev!=linewidth_next:
+                btf.set_linewidth(linewidth)
+                linewidth_prev=linewidth_next
             
-            # === Построение карт для ПОСЛЕДНЕГО напряжения ===
-            if current_voltage_batch is not None:
-                build_voltage_maps(current_voltage_batch, main_folder, collected_data, wavelength)
+            wavelength_next = wavelength
+            if wavelength_prev!=wavelength_next:
+                btf.set_wavelength(wavelength)
+                wavelength_prev=wavelength_next
+            
+            voltage_next = voltage
+            if voltage_prev != voltage_next:
+                ut.set_voltage(voltage=voltage)
+                voltage_prev = voltage_next
+            
+            current_next = current
+            if current_prev != current_next:
+                LD.set_current(current=current)
+                current_prev = current_next
+            
+            delay_next = delay
+            if delay_prev != delay_next:
+                odl.set_time_delay(time_delay=delay)
+                delay_prev = delay_next
+            
+            time.sleep(2)
+            
+
+            # === ИЗМЕРЕНИЯ ===
+            
+            # Сброс статистики осциллографа
+            osc.clear()
+            
+            pm_power = measure_average_power(pm_device=pm_device,duration=1,aver_point=5)
+            
+            # === Каждый спан в своей папке ===
+            rf_max_dict=rf_measurement(
+                rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
+                filename=base_filename, rf_rbw=RF_RBW_MAX,
+                f_start=RF_F_START_MAX, f_stop=RF_F_STOP_MAX, save_png=False)
+
+            rf_peak_freq_max=rf_max_dict["peak_freq"]
+        
+            
+            rf_mid_dict= rf_measurement(
+                rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
+                filename=base_filename, rf_rbw=RF_RBW_MID,
+                f_span=RF_SPAN_MID, f_center=rf_peak_freq_max, save_png=False)
+            
+            rf_peak_freq_mid=rf_mid_dict["peak_freq"]
+    
+            
+            rf_min_dict = rf_measurement(
+                rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
+                filename=base_filename, rf_rbw=RF_RBW_MIN,
+                f_center=rf_peak_freq_mid, f_span=RF_SPAN_MIN, save_png=False)
+            
+            rf_peak_freq_min=rf_min_dict["peak_freq"]
+            
+            
+            osc_dict=oscilloscope_measurement(
+                device=osc,mode='average', 
+                duration=10*NANO, 
+                save_folder_path=main_folder, 
+                filename=base_filename, 
+                folder_structure=base_folder_structure, 
+                channel=4, save_png=False)   
+            osc_mean_freq=osc_dict['mean_GHz']
+            
+            
+
+
+            # === Заполнение буфера ===
+            collected_data['voltage'].append(voltage)
+            collected_data['current'].append(current)
+            collected_data['delay'].append(delay)
+            collected_data['pm_400'].append(pm_power)
+            collected_data['rf_peak_freq_max'].append(rf_peak_freq_max)
+            collected_data['rf_peak_freq_mid'].append(rf_peak_freq_mid)
+            collected_data['rf_peak_freq_min'].append(rf_peak_freq_min)
+            collected_data['osc_mean_freq'].append(osc_mean_freq)
+            
+            # === ПРОВЕРКА: Закончился ли полный цикл для текущего напряжения? ===
+            # Так как DELAYS меняется быстрее всего, а CURRENTS предпоследний,
+            # конец набора данных для одного Voltage наступает, когда 
+            # текущий ток ПОСЛЕДНИЙ и текущая задержка ПОСЛЕДНЯЯ.
+            if current == CURRENTS[-1] and delay == DELAYS[-1]:
+                
+                maps_folder_structure = f'{main_folder}/maps/linewidth_{linewidth}nm/wavelength_{wavelength}nm/voltage_{voltage}V'
+                
+                print(f"Данные для V={voltage} собраны. Строю карты...")
+                build_voltage_maps(
+                    voltage=voltage,
+                    linewidth=linewidth,
+                    wavelength=wavelength,
+                    folder_structure=maps_folder_structure,
+                    data_buf=collected_data
+                )
+                
+                # Очищаем буфер для следующего напряжения
+                collected_data = {
+                    'voltage': [], 'current': [], 'delay': [],
+                    'pm_400': [],
+                    'rf_peak_freq_max': [], 
+                    'rf_peak_freq_mid': [], 
+                    'rf_peak_freq_min': [],
+                    'osc_mean_freq': [],
+                }
+            
+        
+       
+            
+        print('Данные успешно сняты')
     finally:
         try:
             osc.disconnect()

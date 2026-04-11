@@ -62,6 +62,21 @@ class Oscilloscope:
         return self.send_command(f"HORIZONTAL:MODE:SAMPLERATE {rate}", False)
         
     
+    def duration_time(self, duration):
+        """установливает продолжительность сигнала
+        минимальная duration=1нс
+        чтобы уменьшить еще, нужно менять recordlength
+        связь:
+        
+        duration=recordlength/sample_rate
+        
+        """
+        
+        
+        recordlength=10_000
+        self.horizontal_recordlength(length=recordlength)
+        self.sample_rate(rate=recordlength/duration)
+        
         
     def acquire_mode(self, mode):
         """Устанавливает режим захвата сигнала.
@@ -126,6 +141,11 @@ class Oscilloscope:
             raise ValueError(f"Invalid state. Valid states are: {', '.join(valid_states)}")
         
         return self.send_command(f"ACQUIRE:STATE {run.upper()}", False)
+    
+    def clear(self):
+        """сбрасывать измеренную статистику
+        """
+        return self.send_command("MEASUREMENT:STATISTICS:COUNT RESET", False)
        
     def vertical_scale(self,channel,scale):
         channel=str(channel)
@@ -201,11 +221,11 @@ class Oscilloscope:
         return time_axis, voltage
 
     
-    def trigger_level(self,challel,level):
-        challel=str(challel)
+    def trigger_level(self,channel,level):
+        channel=str(channel)
         level=str(level)
         self.send_command("TRIGGER:A:MODE AUTO", False)  # Режим AUTO для гарантированного захвата
-        self.send_command(f"TRIGGER:A:EDGE:SOURCE CH{challel}", False)
+        self.send_command(f"TRIGGER:A:EDGE:SOURCE CH{channel}", False)
         self.send_command(f"TRIGGER:A:LEVEL {level}", False)  # Уровень триггера в 0V
         
         return

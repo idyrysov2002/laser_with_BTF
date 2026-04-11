@@ -29,7 +29,7 @@ class OpticDelayLine:
                 dsrdtr=False
             )
             self.is_connected = True
-            print(f"ODL_650: порт {self.port} открыт")
+            print(f"ODL: порт {self.port} открыт")
             return True
         except Exception as e:
             print(f"Ошибка подключения: {e}")

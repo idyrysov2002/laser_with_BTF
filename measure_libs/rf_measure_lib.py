@@ -7,7 +7,7 @@ from scripts.number_with_decimal_prefix import number_with_decimal_prefix
 from config import PARAM_LABELS
 def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folder_structure,
                    rf_rbw: float, f_start=None, f_stop=None, 
-                   f_span=None, f_center=None, rf_level=-20, save_png=None):
+                   f_span=None, f_center=None, rf_level=-20, save_png=True):
     """
     Выполняет серию из N измерений на RF устройстве.
     
@@ -97,7 +97,7 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
             # Сохраняем данные в созданную подпапку
             write_arrays_txt(save_list_x, save_list_y, folder_path=measurement_folder, filename=measurement_file_name)
             
-            if save_png is not None:
+            if save_png == True:
                 plot_and_save_xy(x=freqs, y=powers, title=png_title, 
                                 folder_path=measurement_folder, xlabel=x_label, ylabel=y_label,
                                 filename=measurement_file_name, show_plot=False)
