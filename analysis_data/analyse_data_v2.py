@@ -1,19 +1,19 @@
 from pathlib import Path
 from tqdm import tqdm
-from create_map_and_save import create_map_and_save
-from create_folder import create_date_folder, create_multiple_subfolders
-from slice_current import slice_current
-from read_from_txt import read_txt_xyz, read_txt_xy
-from plot_and_save_xy import plot_and_save_xy
-from copy_files import copy_files
-from create_plot_grid import create_plot_grid
-from plot_histogram_grid import plot_histogram_grid
+from scripts.create_map_and_save import create_map_and_save
+from scripts.create_folder import create_date_folder, create_multiple_subfolders
+from scripts.slice_current import slice_current
+from scripts.read_from_txt import read_txt_xyz, read_txt_xy
+from scripts.plot_and_save_xy import plot_and_save_xy
+from scripts.copy_files import copy_files
+from scripts.create_plot_grid import create_plot_grid
+from scripts.plot_histogram_grid import plot_histogram_grid
 import sys
 import os
 import numpy as np
-from plot_histogram_and_save import plot_histogram_and_save
-from calculate_FWHM_dBm import calculate_FWHM_dBm
-from get_OSC_data_from_txt import get_OSC_data_from_txt
+from scripts.plot_histogram_and_save import plot_histogram_and_save
+from scripts.calculate_FWHM_dBm import calculate_FWHM_dBm
+from scripts.get_OSC_data_from_txt import get_OSC_data_from_txt
 # Получаем путь к текущему файлу
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Получаем путь к родительской папке (где лежит config)
