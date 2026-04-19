@@ -6,14 +6,14 @@ from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.create_folder import create_multiple_subfolders
 from config import PARAM_LABELS
 
-def yoko_measurement(device, save_folder_path: str, filename: str, folder_structure: str,
+def yoko_measurement(device, save_folder_path: str, filename: str, folder_structure: str,png_title_point=None,
                   save_png=True):
     # Формируем новую путь
     new_folder_structure=f'yokogawa_measurements/{folder_structure}'
     new_save_folder_path=create_multiple_subfolders(parent_folder=save_folder_path,folder_structure=new_folder_structure)
 
     # Формируем новое имя файла
-    new_filename=f"yokogawa_spectrum_{filename}"
+    new_filename=f"yokogawa_{filename}"
 
     # Получение данных
     wave_arr, ampl_arr = device.get_os()
@@ -35,10 +35,11 @@ def yoko_measurement(device, save_folder_path: str, filename: str, folder_struct
     )
     png_title=f"Peak power: {peak_intensity:.4f}mW, Wavelength(Peak power): {peak_wave:.3f}nm"
     if save_png == True:
+        title=f'{png_title}\n{png_title_point}'
         plot_and_save_xy(
             x=wave_arr,
             y=ampl_arr,
-            title=png_title,
+            title=title,
             folder_path=new_save_folder_path,
             xlabel=x_label,
             ylabel=y_label,

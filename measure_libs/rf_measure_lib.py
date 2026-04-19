@@ -7,7 +7,7 @@ from scripts.number_with_decimal_prefix import number_with_decimal_prefix
 from config import PARAM_LABELS
 def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folder_structure,
                    rf_rbw: float, f_start=None, f_stop=None, 
-                   f_span=None, f_center=None, rf_level=-20, save_png=True):
+                   f_span=None, f_center=None, rf_level=None, png_title_point=None, save_png=True):
     """
     Выполняет серию из N измерений на RF устройстве.
     
@@ -47,7 +47,7 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
         measurement_folder = create_multiple_subfolders(parent_folder=save_folder_path, folder_structure=full_structure)
         
         # имя txt, png файла
-        measurement_file_name = 'rf_spectrum_'+filename + f"_span_{number_with_decimal_prefix(f_span)}Hz_measurement_number_{i+1}"
+        measurement_file_name = 'rf_'+filename + f"_span_{number_with_decimal_prefix(f_span)}Hz_measurement_number_{i+1}"
         
         try:
             #  Настройка устройства
@@ -61,8 +61,8 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
             # Получение данных
             freqs, powers = rf_device.get_rf()
             
-            # # удаляем первые точки
-            # freqs, powers=freqs[10:], powers[10:]
+            # удаляем первые точки
+            freqs, powers=freqs[5:], powers[5:]
             
             
             
@@ -92,15 +92,22 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
             save_list_y = [powers, y_label]
 
             peak_freq_GHz=peak_freq/1e+9
-            png_title=f'Peak power: {peak_power:.2f}dBm, Freq(Peak power): {peak_freq_GHz:.2f}GHz, SMSR: {smsr:.2f}dB'
+            png_title=f'Peak power: {peak_power:.2f}dBm, Freq(Peak power): {peak_freq_GHz:.2f}GHz'
 
             # Сохраняем данные в созданную подпапку
             write_arrays_txt(save_list_x, save_list_y, folder_path=measurement_folder, filename=measurement_file_name)
             
             if save_png == True:
-                plot_and_save_xy(x=freqs, y=powers, title=png_title, 
-                                folder_path=measurement_folder, xlabel=x_label, ylabel=y_label,
-                                filename=measurement_file_name, show_plot=False)
+                title=f'{png_title}\n{png_title_point}'
+                plot_and_save_xy(
+                                x=freqs, 
+                                y=powers, 
+                                title=title, 
+                                folder_path=measurement_folder, 
+                                xlabel=x_label, 
+                                ylabel=y_label,
+                                filename=measurement_file_name, 
+                                show_plot=False)
                 
             freqs,powers=[],[]
             

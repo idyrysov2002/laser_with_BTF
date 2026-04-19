@@ -77,7 +77,10 @@ class Oscilloscope:
         self.horizontal_recordlength(length=recordlength)
         self.sample_rate(rate=recordlength/duration)
         
-        
+    def set_triger_50(self):
+        return self.send_command('TRIGger:A SETLevel',False)
+    
+    
     def acquire_mode(self, mode):
         """Устанавливает режим захвата сигнала.
         

@@ -9,7 +9,7 @@ from config import PARAM_LABELS, GIGA
 
 
 
-def oscilloscope_measurement(device, mode, duration,  save_folder_path, filename, folder_structure="folder_1/folder_2", channel=4, save_png=True):
+def oscilloscope_measurement(device, mode, duration,  save_folder_path, filename, folder_structure="folder_1/folder_2", channel=4, png_title=None, png_title_point=None, save_png=True):
     
     
     # Создаем словарь для сохранения статистики
@@ -18,7 +18,7 @@ def oscilloscope_measurement(device, mode, duration,  save_folder_path, filename
     # Вычисляем префикс
     duration_prefix = number_with_decimal_prefix(duration)
     
-    new_folder_structure=f'oscilloscope_measurements/{folder_structure}/{mode}/duration_{duration_prefix}s'
+    new_folder_structure=f'oscilloscope_measurements/{folder_structure}'
     
     # Создаем вложенные папки
     measurement_folder = create_multiple_subfolders(parent_folder=save_folder_path,folder_structure=new_folder_structure)
@@ -70,10 +70,11 @@ def oscilloscope_measurement(device, mode, duration,  save_folder_path, filename
 
     # Запись PNG (если нужно)
     if save_png == True:
+        title=f'{png_title}\n{png_title_point}'
         plot_and_save_xy(
             x=time_arr,
             y=voltage_arr,
-            title=png_title,
+            title=title,
             folder_path=measurement_folder,
             xlabel=x_label,
             ylabel=y_label,

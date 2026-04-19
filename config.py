@@ -22,8 +22,8 @@ STABILIZATION_TIME=3
 # ─────────────────────────────────────────────────────────────
 # НАСТРОЙКИ РАДИОЧАСТОТНИКА
 # ─────────────────────────────────────────────────────────────
-RF_LEVEL=-20
-RF_F_START_MAX = 0.2e+9
+RF_LEVEL=0
+RF_F_START_MAX = 9e+3
 RF_F_STOP_MAX = 6.2e+9
 RF_SPAN_MAX=6*GIGA
 RF_RBW_MAX=1*MEGA
@@ -37,24 +37,29 @@ RF_RBW_MIN=1*KILO
 NUMBER_RF_MEASURE=1
 
 
-VOLTAGES=[0, 1, 2, 3, 4, 5] # в V
-DELAYS=np.arange(0, 331, 10) # в ps
-CURRENTS=np.arange(100, 501, 50) # в mA
-WAVELENGTH=[1540, 1550, 1560] # в nm
-LINEWIDTH=[1] # в nm
+# VOLTAGES=[0, 1, 2, 3, 4, 5] # в V
+# DELAYS=np.arange(0, 331, 10) # в ps
+# CURRENTS=np.arange(100, 501, 20) # в mA
+WAVELENGTH=[1525, 1530, 1535, 1540,1545, 1550,1555, 1560, 1565] # в nm
+LINEWIDTH=[1, 6, 12, 18] # в nm
 
+
+DELAYS=[0, 100, 200, 300]
+CURRENTS=[300, 400]
+# WAVELENGTH=[1530, 1540] # в nm
+# LINEWIDTH=[1] # в nm
 # VOLTAGES=[0] # в V
 # DELAYS=np.arange(0, 10, 5) # в ps
 # CURRENTS=np.arange(300, 401, 100) # в mA
 # WAVELENGTH=[1530, 1540] # в nm
 # OSCILLOSCOPE_MODES=['average', 'sample']
-OSC_MODES=['average']
-OSC_HOR_SCALES = [5e-10]
+# OSC_MODES=['average']
+# OSC_HOR_SCALES = [5e-10]
 
-YOKO_RES_BIG_SPAN=0.02
-YOKO_RES_SMALL_SPAN=0.02
-YOKO_BIG_SPAN_START=1510
-YOKO_BIG_SPAN_STOP=1570
+# YOKO_RES_BIG_SPAN=0.02
+# YOKO_RES_SMALL_SPAN=0.02
+# YOKO_BIG_SPAN_START=1510
+# YOKO_BIG_SPAN_STOP=1570
 
 # Словарь конфигурации приборов
 # enabled: True/False - подключать или нет
