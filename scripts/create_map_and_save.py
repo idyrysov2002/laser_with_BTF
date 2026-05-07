@@ -62,7 +62,7 @@ def create_map_and_save(
                 file.write(txt_header + "\n")
                 for xi, yi, zi in zip(current_values, delay_values, map_values):
                     file.write(f"{xi}\t{yi}\t{zi}\n")
-            print(f"\nДанные успешно сохранены в:{txt_path}")
+            print(f"\nДанные карты успешно сохранены в:{txt_path}")
         except Exception as e:
             print(f"Ошибка сохранения TXT: {e}")
     
@@ -104,7 +104,8 @@ def create_map_and_save(
     vmin = np.nanmin(map_matrix)
     vmax = np.nanmax(map_matrix)
 
-    contour = plt.contourf(X, Y, map_matrix,vmin=vmin, vmax=vmax, cmap="viridis")
+    # contour = plt.contourf(X, Y, map_matrix,vmin=vmin, vmax=vmax, cmap="viridis")
+    contour = plt.contourf(X, Y, map_matrix,levels=20, cmap="viridis")
     if title:
         plt.title(title, fontsize=FONT_SIZE_TITLE_TEXT, fontname=FONT_FAMILY)
     
@@ -124,7 +125,7 @@ def create_map_and_save(
     if png_path is not None:
         try:
             plt.savefig(png_path, dpi=300, bbox_inches='tight')
-            print(f"\nГрафик сохранён: {png_path}")
+            print(f"\nКарта сохранён в: {png_path}")
         except Exception as e:
             print(f"Ошибка сохранения графика: {e}")
     
