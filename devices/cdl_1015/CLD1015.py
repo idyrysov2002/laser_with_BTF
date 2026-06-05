@@ -46,9 +46,9 @@ class CLD1015():
 
 	def turn_off_all(self):
 		self.set_current(0)
-		time.sleep(3)
+		time.sleep(2)
 		self.turn_off_laser()
-		time.sleep(3)
+		time.sleep(2)
 		self.turn_off_tec()
 		
 		self.close()
@@ -57,9 +57,9 @@ class CLD1015():
 		
 		
 	def turn_on_all(self):
-		time.sleep(3)
+		time.sleep(2)
 		self.turn_on_tec()
-		time.sleep(3)
+		time.sleep(2)
 		self.turn_on_laser()
 		
 		

@@ -7,14 +7,15 @@ class YokogawaOSA:
     длина волны, разрешение, спан и др. задается в нм.
     Например, set_center(1550) устанавливает центр на длине волны 1550 нм
     """
-    def __init__(self, dev_IP="TCPIP0::10.2.60.60::inst0::INSTR"):
+    def __init__(self,write_TR, dev_IP="TCPIP0::10.2.60.60::inst0::INSTR"):
         self.rm = visa.ResourceManager()
         self.device = self.rm.open_resource(dev_IP)
         self.device.timeout = None
 
         print(self.__class__.__name__, "inited!")
-
-        self.TR_type = "TRA"
+        
+        write_TR_upper=write_TR.upper()
+        self.TR_type = f"TR{write_TR_upper}"
         self.multiplier = 1e9
         print(self.device.query("*idn?"))
 

@@ -24,7 +24,7 @@ def oscilloscope_measurement(device, mode, duration,  save_folder_path, filename
     measurement_folder = create_multiple_subfolders(parent_folder=save_folder_path,folder_structure=new_folder_structure)
 
     # Формируем имя файла
-    osc_filename = f"oscillogram_{mode}_duration_{duration_prefix}s_{filename}"
+    osc_filename = f"osc_{mode}_{filename}"
 
     # Получение данных
     time_arr, voltage_arr = device.get_oscilloscope_data(channel=channel)

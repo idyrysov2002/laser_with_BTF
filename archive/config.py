@@ -22,7 +22,7 @@ STABILIZATION_TIME=2
 # ─────────────────────────────────────────────────────────────
 # НАСТРОЙКИ РАДИОЧАСТОТНИКА
 # ─────────────────────────────────────────────────────────────
-RF_LEVEL=-20
+RF_LEVEL=0
 RF_F_START_MAX = 9e+3
 RF_F_STOP_MAX = 6.2e+9
 RF_SPAN_MAX=6.2*GIGA
@@ -34,31 +34,24 @@ RF_RBW_MID=10*KILO
 RF_SPAN_MIN=1*MEGA
 RF_RBW_MIN=1*KILO
 
-RF_6200MHz_NAME='6200MHz'
-RF_100MHz_NAME='100MHz'
-RF_1MHz_NAME='1MHz'
-
 NUMBER_RF_MEASURE=1
 OSC_MODE='average'
 # 'sample','peakdetect', 'average' 
 OSC_VER_SCALE=0.01
 OSC_CHANNEL=4
 
-BTF_COM='COM11'
-ODL_COM='COM10'
-OSC_IP="10.2.60.150"
-OSC_PORT=4000
-PM_DURATION=1
-PM_POINTS=3
 
 
-DELAYS=np.arange(0, 301, 5) # в ps
-CURRENTS=np.arange(100, 501, 20) # в mA
+
+
+
+DELAYS=np.arange(0, 301, 10) # в ps
+# CURRENTS=np.arange(100, 501, 100) # в mA
+CURRENTS=[ 300, 400]
 LINEWIDTH=[1] # в nm
 WAVELENGTH=[1550] # в nm
 
-DATA_FOLDER_PREFIX='laser_BTF'
-MAIN_SAVE_PATH="Z:/data_for_laser_with_BTF"
+
 
 
 

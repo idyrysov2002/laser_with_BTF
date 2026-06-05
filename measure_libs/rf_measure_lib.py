@@ -3,9 +3,9 @@ from scripts.create_folder import create_multiple_subfolders
 from scripts.write_arrays_to_txt import write_arrays_txt
 from scripts.plot_and_save_xy import plot_and_save_xy
 from scripts.calculate_smsr import calculate_smsr
-from scripts.number_with_decimal_prefix import number_with_decimal_prefix
+
 from config import PARAM_LABELS
-def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folder_structure,
+def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folder_structure, span_name: str,
                    rf_rbw: float, f_start=None, f_stop=None, 
                    f_span=None, f_center=None, rf_level=None, png_title_point=None, save_png=True):
     """
@@ -41,13 +41,13 @@ def rf_measurement(rf_device, N: int, save_folder_path: str, filename: str,folde
     for i in range(N):
         
         # Собираем всю цепочку в одну строку
-        full_structure = f"rf_measurements/{folder_structure}/span_{number_with_decimal_prefix(f_span)}Hz/measurement_number_{i+1}"
+        full_structure = f"rf_measurements/{folder_structure}/span_{span_name}/num_{i+1}"
         
         # Создаем все папки сразу
         measurement_folder = create_multiple_subfolders(parent_folder=save_folder_path, folder_structure=full_structure)
         
         # имя txt, png файла
-        measurement_file_name = 'rf_'+filename + f"_span_{number_with_decimal_prefix(f_span)}Hz_measurement_number_{i+1}"
+        measurement_file_name = 'rf_'+filename + f"_span_{span_name}_num_{i+1}"
         
         try:
             #  Настройка устройства

@@ -62,20 +62,16 @@ class Oscilloscope:
         return self.send_command(f"HORIZONTAL:MODE:SAMPLERATE {rate}", False)
         
     
-    def duration_time(self, duration):
-        """установливает продолжительность сигнала
-        минимальная duration=1нс
-        чтобы уменьшить еще, нужно менять recordlength
-        связь:
+    # def duration_time(self, duration):
+    #     """установливает продолжительность сигнала
         
-        duration=recordlength/sample_rate
+    #     duration=recordlength/sample_rate
         
-        """
+    #     """
         
-        
-        recordlength=10_000
-        self.horizontal_recordlength(length=recordlength)
-        self.sample_rate(rate=recordlength/duration)
+    #     sample_rate=1e+15
+    #     self.sample_rate(rate=sample_rate)
+    #     self.horizontal_recordlength(length=sample_rate/duration)
         
     def set_triger_50(self):
         return self.send_command('TRIGger:A SETLevel',False)

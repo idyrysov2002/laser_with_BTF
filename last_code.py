@@ -17,7 +17,7 @@ from pathlib import Path
 
 
 # импорт настроек
-from config import NANO
+from config import NANO, OSC_MODE,STABILIZATION_TIME,OSC_VER_SCALE,OSC_CHANNEL
 from config import RF_SPAN_MAX,RF_SPAN_MID,RF_SPAN_MIN
 from config import LINEWIDTH, WAVELENGTH, CURRENTS, DELAYS
 from config import NUMBER_RF_MEASURE
@@ -41,9 +41,9 @@ from measure_libs.yokogawa_measure_lib import yoko_measurement
 
 
 # === Определение имён для папок спанов (с Hz) ===
-max_span = f'span_{number_with_decimal_prefix(RF_SPAN_MAX)}Hz'
-mid_span = f'span_{number_with_decimal_prefix(RF_SPAN_MID)}Hz'
-min_span = f'span_{number_with_decimal_prefix(RF_SPAN_MIN)}Hz'
+max_span = f'6000MHz'
+mid_span = f'100MHz'
+min_span = f'1MHz'
 
 
 
@@ -63,11 +63,11 @@ def build_maps(linewidth, wavelength, folder_structure, data_buf):
     
     # === Конфигурация карт ===
     maps_config = [
-        ('pm_400', 'power_meter', 'Power, mW', ''),
-        (np.array(data_buf['rf_peak_freq_max']) / 1e+9, f'rf_peak_freq_{max_span}', 'Frequency, GHz', max_span),
-        (np.array(data_buf['rf_peak_freq_mid']) / 1e+9, f'rf_peak_freq_{mid_span}', 'Frequency, GHz', mid_span),
-        (np.array(data_buf['rf_peak_freq_min']) / 1e+9, f'rf_peak_freq_{min_span}', 'Frequency, GHz', min_span),
-        ('osc_mean_freq', 'osc_mean_freq', 'Frequency, GHz', ''),
+        ('pm_400', f'pm400_wavelength_{wavelength}nm_linewidth_{linewidth}nm', 'Power, mW', ''),
+        (np.array(data_buf['rf_peak_freq_max']) / 1e+9, f'rf_peak_freq_{max_span}_wavelength_{wavelength}nm_linewidth_{linewidth}nm', 'Frequency, GHz', max_span),
+        (np.array(data_buf['rf_peak_freq_mid']) / 1e+9, f'rf_peak_freq_{mid_span}_wavelength_{wavelength}nm_linewidth_{linewidth}nm', 'Frequency, GHz', mid_span),
+        (np.array(data_buf['rf_peak_freq_min']) / 1e+9, f'rf_peak_freq_{min_span}_wavelength_{wavelength}nm_linewidth_{linewidth}nm', 'Frequency, GHz', min_span),
+        ('osc_mean_freq', f'osc_mean_freq_wavelength_{wavelength}nm_linewidth_{linewidth}nm', 'Frequency, GHz', ''),
     ]
     
     for z_raw, fname_suffix, z_label, span_label in maps_config:
@@ -78,7 +78,7 @@ def build_maps(linewidth, wavelength, folder_structure, data_buf):
                 x_arr=[x.tolist(), "Current, mA"],
                 y_arr=[y.tolist(), "Delay, ps"],
                 z_arr=[z.tolist(), z_label],
-                title=f"PM400: linewidth {linewidth}nm, wavelength {wavelength}nm",
+                title=f"PM400: LW={linewidth}nm, WL={wavelength}nm",
                 folder_path=folder_path,
                 filename=f"{fname_suffix}",
                 show_plot=False
@@ -92,7 +92,7 @@ def build_maps(linewidth, wavelength, folder_structure, data_buf):
                 x_arr=[x.tolist(), "Current, mA"],
                 y_arr=[y.tolist(), "Delay, ps"],
                 z_arr=[z.tolist(), z_label],
-                title=f"OSC: linewidth {linewidth}nm, wavelength {wavelength}nm",
+                title=f"OSC: LW={linewidth}nm, WL={wavelength}nm",
                 folder_path=folder_path,
                 filename=f"{fname_suffix}",
                 show_plot=False
@@ -105,7 +105,7 @@ def build_maps(linewidth, wavelength, folder_structure, data_buf):
             x_arr=[x.tolist(), "Current, mA"],
             y_arr=[y.tolist(), "Delay, ps"],
             z_arr=[z.tolist(), z_label],
-            title=f"linewidth {linewidth}nm, wavelength {wavelength}nm, ({span_label})",
+            title=f"RF: LW={linewidth}nm, WL={wavelength}nm, span={span_label}",
             folder_path=folder_path,
             filename=f"{fname_suffix}",
             show_plot=False
@@ -120,6 +120,7 @@ def main():
         # ========================
         # ИНИЦИАЛИЗАЦИЯ ПРИБОРОВ
         # ========================
+        # ========================
         btf = BTF100(port='COM11')
         pm_device = PMDevicePM100D()
         odl = OpticDelayLine('COM10')
@@ -129,14 +130,12 @@ def main():
         LD.turn_on_all()
         
         osc=Oscilloscope(ip="10.2.60.150", port=4000)
-        osc.trigger_level(channel=4,level=-0.050)
         # Установливаем режим (например, sample, average)
-        osc.acquire_mode(mode='average')
+        osc.acquire_mode(mode=OSC_MODE)
+        osc.vertical_scale(channel=OSC_CHANNEL,scale=OSC_VER_SCALE)
 
-        # Установливаем длительность сигнала
-        # osc.duration_time(duration=10*NANO)
-        
-        yoko=YokogawaOSA()
+        # yoko=YokogawaOSA(write_TR='C')
+
         
 
         params = itertools.product(LINEWIDTH, WAVELENGTH, CURRENTS, DELAYS)
@@ -157,17 +156,16 @@ def main():
         delay_prev = None
         linewidth_prev = None
         wavelength_prev = None
-        
     
-        data_prefix='laser_with_btf_cir_SN_26736318_after_coupler'
+        data_prefix='laser_BTF'
         main_folder = create_date_folder(base_path="Z:/data_for_laser_with_BTF", prefix=data_prefix)
         for idx, (linewidth, wavelength,current, delay) in enumerate(params, 1):
             
-            
             base_folder_structure = f"linewidth_{linewidth}nm/wavelength_{wavelength}nm/current_{current}mA"
             base_filename = f'delay_{delay}ps_current_{current}mA_wavelength_{wavelength}nm_linewidth_{linewidth}nm'
-            maps_folder_structure = f'{main_folder}/maps/linewidth_{linewidth}nm/wavelength_{wavelength}nm'
             png_title_point=f'LW={linewidth}nm, WL={wavelength}nm, Current={current}mA, Delay={delay}ps'
+            maps_folder_structure = f'{main_folder}/maps/linewidth_{linewidth}nm/wavelength_{wavelength}nm'
+
 
             # === НАСТРОЙКА ОБОРУДОВАНИЯ ===
             linewidth_next = linewidth
@@ -191,44 +189,67 @@ def main():
                 odl.set_time_delay(time_delay=delay)
                 delay_prev = delay_next
             
-            # время для стабилизации
-            time.sleep(2)
+            time.sleep(STABILIZATION_TIME)
             
 
             # === ИЗМЕРЕНИЯ ===
             
-            # Сброс статистики осциллографа
-            osc.clear()
+            # осциллограф, установка триегра в уровне 50%
+            osc.set_triger_50()
             
-            pm_power = measure_average_power(pm_device=pm_device,duration=1,aver_point=5)
+            pm_power = measure_average_power(pm_device=pm_device,duration=1,aver_point=3)
+            
             
             # === Каждый спан в своей папке ===
             rf_max_dict=rf_measurement(
-                rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                filename=base_filename, rf_rbw=RF_RBW_MAX,
-                f_start=RF_F_START_MAX, f_stop=RF_F_STOP_MAX,rf_level=RF_LEVEL, png_title_point=png_title_point,save_png=True)
+                rf_device=rf_device, 
+                N=NUMBER_RF_MEASURE, 
+                save_folder_path=main_folder,
+                folder_structure=base_folder_structure,
+                filename=base_filename, 
+                rf_rbw=RF_RBW_MAX,
+                f_start=RF_F_START_MAX, 
+                f_stop=RF_F_STOP_MAX,
+                rf_level=RF_LEVEL, 
+                png_title_point=png_title_point,
+                save_png=True)
 
             rf_peak_freq_max=rf_max_dict["peak_freq"]
         
             
             rf_mid_dict= rf_measurement(
-                rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                filename=base_filename, rf_rbw=RF_RBW_MID,
-                f_span=RF_SPAN_MID, f_center=rf_peak_freq_max, rf_level=RF_LEVEL,png_title_point=png_title_point, save_png=True)
+                rf_device=rf_device, 
+                N=NUMBER_RF_MEASURE, 
+                save_folder_path=main_folder,
+                folder_structure=base_folder_structure,
+                filename=base_filename, 
+                rf_rbw=RF_RBW_MID,
+                f_span=RF_SPAN_MID, 
+                f_center=rf_peak_freq_max, 
+                rf_level=RF_LEVEL, 
+                png_title_point=png_title_point,
+                save_png=True)
             
             rf_peak_freq_mid=rf_mid_dict["peak_freq"]
     
             
             rf_min_dict = rf_measurement(
-                rf_device=rf_device, N=NUMBER_RF_MEASURE, save_folder_path=main_folder,folder_structure=base_folder_structure,
-                filename=base_filename, rf_rbw=RF_RBW_MIN,
-                f_center=rf_peak_freq_mid, f_span=RF_SPAN_MIN,rf_level=RF_LEVEL,png_title_point=png_title_point,save_png=True)
+                rf_device=rf_device, 
+                N=NUMBER_RF_MEASURE, 
+                save_folder_path=main_folder,
+                folder_structure=base_folder_structure,
+                filename=base_filename, 
+                rf_rbw=RF_RBW_MIN,
+                f_center=rf_peak_freq_mid, 
+                f_span=RF_SPAN_MIN,rf_level=RF_LEVEL,
+                png_title_point=png_title_point,
+                save_png=True)
             
             rf_peak_freq_min=rf_min_dict["peak_freq"]
             
             
             osc_dict=oscilloscope_measurement(
-                device=osc,mode='average', 
+                device=osc,mode=OSC_MODE, 
                 duration=10*NANO, 
                 save_folder_path=main_folder, 
                 filename=base_filename, 
@@ -237,19 +258,21 @@ def main():
                 png_title_point=png_title_point,
                 save_png=True
                 )   
+            
             osc_mean_freq=osc_dict['mean_GHz']
             
-            yoko_measurement(
-                            device=yoko, 
-                             save_folder_path=main_folder,
-                             filename=base_filename,
-                             folder_structure=base_folder_structure,
-                             png_title_point=png_title_point,
-                             save_png=True
-                             )
+            # if (np.where(CURRENTS == current)[0][0] in [0, len(CURRENTS)//2, len(CURRENTS)-1] and 
+            #                 np.where(DELAYS == delay)[0][0] in [0, len(DELAYS)//2, len(DELAYS)-1]):
+            #     yoko_measurement(
+            #         device=yoko, 
+            #         save_folder_path=main_folder,
+            #         filename=base_filename,
+            #         folder_structure=base_folder_structure,
+            #         png_title_point=png_title_point,
+            #         save_png=True
+            #     )
 
-
-            # === Заполнение словаря для карты ===
+            # === Заполнение буфера ===
             collected_data['current'].append(current)
             collected_data['delay'].append(delay)
             collected_data['pm_400'].append(pm_power)
@@ -259,6 +282,7 @@ def main():
             collected_data['osc_mean_freq'].append(osc_mean_freq)
             
             if current == CURRENTS[-1] and delay == DELAYS[-1]:
+                
                 build_maps(
                     linewidth=linewidth,
                     wavelength=wavelength,

@@ -3,8 +3,8 @@ import time
 import re
 
 class OpticDelayLine:
-    def __init__(self, serial_port='COM6'):
-        print(f'Optic Delay Line connected (Port: {serial_port})')
+    def __init__(self, port='COM6'):
+        print(f'Optic Delay Line connected (Port: {port})')
 
     def initialize(self):
         print(f'Optic Delay Line initalized')

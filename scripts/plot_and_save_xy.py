@@ -89,7 +89,7 @@ def plot_and_save_xy(
     # ========================
     if folder_path is not None and filename is not None:
         full_path = os.path.join(folder_path, f"{filename}.png")
-        plt.savefig(full_path, dpi=300, bbox_inches='tight')
+        plt.savefig(full_path, dpi=100, bbox_inches='tight')
         print(f"График сохранён в: {full_path}")
 
     # ========================

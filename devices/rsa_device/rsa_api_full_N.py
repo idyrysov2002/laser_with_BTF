@@ -82,7 +82,7 @@ def search_connect():
 
 
 """################SPECTRUM EXAMPLE################"""
-def config_spectrum(cf=3e9, refLevel=0, span=40e6, rbw=300e3,start=9e3, stop=6.2e9):
+def config_spectrum(cf=3e9, refLevel=0, span=40e6, rbw=300e3,start=9e3, stop=6.2e9, trace_points=801):
 	rsa.SPECTRUM_SetEnable(c_bool(True))
 	rsa.CONFIG_SetCenterFreq(c_double(cf))
 	rsa.CONFIG_SetReferenceLevel(c_double(refLevel))
@@ -96,9 +96,15 @@ def config_spectrum(cf=3e9, refLevel=0, span=40e6, rbw=300e3,start=9e3, stop=6.2
 	specSet.rbw = rbw
 	specSet.start = start
 	specSet.stop = stop
+	
+	# ВАЖНО: Значение traceLength ОБЯЗАТЕЛЬНО должно быть нечетным числом!
+	specSet.traceLength = trace_points 
 	rsa.SPECTRUM_SetSettings(specSet)
 	rsa.SPECTRUM_GetSettings(byref(specSet))
 	return specSet
+
+
+
 
 def get_spectrum_settings():
 	specSet = Spectrum_Settings()
