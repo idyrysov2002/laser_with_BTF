@@ -115,7 +115,7 @@ def main():
         
         # ИНИЦИАЛИЗАЦИЯ ПРИБОРОВ
         # btf = BTF100(port=BTF_COM)
-        pm_device = PMDevicePM100D()
+        # pm_device = PMDevicePM100D()
         odl = OpticDelayLine(port=ODL_COM)
         odl.initialize()
         rf_device = RF306B()
@@ -183,7 +183,8 @@ def main():
             # осциллограф, установка триегра в уровне 50%
             osc.set_triger_50()
             
-            pm_power = measure_average_power(pm_device=pm_device,duration=PM_DURATION,aver_point=PM_POINTS)
+            # pm_power = measure_average_power(pm_device=pm_device,duration=PM_DURATION,aver_point=PM_POINTS)
+            pm_power = 1
     
             
             rf_max_dict=rf_measurement(

@@ -53,7 +53,7 @@ PM_POINTS=3
 
 
 DELAYS=np.arange(0, 331, 5) # в ps
-CURRENTS=np.arange(50, 501, 10) # в mA
+CURRENTS=np.arange(100, 500, 20) # в mA
 LINEWIDTH=[] # в nm
 WAVELENGTH=['x'] # в nm
 
