@@ -22,7 +22,7 @@ STABILIZATION_TIME=2
 # ─────────────────────────────────────────────────────────────
 # НАСТРОЙКИ РАДИОЧАСТОТНИКА
 # ─────────────────────────────────────────────────────────────
-RF_LEVEL=-20
+RF_LEVEL= 0
 RF_F_START_MAX = 9e+3
 RF_F_STOP_MAX = 6.2e+9
 RF_SPAN_MAX=6.2*GIGA
@@ -52,10 +52,10 @@ PM_DURATION=1
 PM_POINTS=3
 
 
-DELAYS=np.arange(0, 301, 5) # в ps
-CURRENTS=np.arange(100, 501, 20) # в mA
-LINEWIDTH=[1] # в nm
-WAVELENGTH=[1550] # в nm
+DELAYS=np.arange(0, 331, 5) # в ps
+CURRENTS=np.arange(50, 501, 10) # в mA
+LINEWIDTH=[] # в nm
+WAVELENGTH=['x'] # в nm
 
 DATA_FOLDER_PREFIX='laser_BTF'
 MAIN_SAVE_PATH="Z:/data_for_laser_with_BTF"
