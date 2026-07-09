@@ -54,7 +54,7 @@ PM_POINTS=3
 
 DELAYS=np.arange(0, 331, 5) # в ps
 CURRENTS=np.arange(100, 500, 20) # в mA
-LINEWIDTH=[] # в nm
+LINEWIDTH=[1] # в nm
 WAVELENGTH=['x'] # в nm
 
 DATA_FOLDER_PREFIX='laser_BTF'
@@ -66,41 +66,8 @@ MAIN_SAVE_PATH="Z:/data_for_laser_with_BTF"
 
 
 
-# Словарь конфигурации приборов
-# enabled: True/False - подключать или нет
-# port: COM-порт (если нужен)
-
-INSTRUMENTS = {
-    "odl": {"enabled": True, "port": "COM6", "label": "d"},
-    "btf": {"enabled": True, "port": "COM3"},
-    "yoko": {"enabled": True},
-    "rf": {"enabled": True},
-    "ld": {"enabled": True},
-    "ut": {"enabled": True, "port": "COM8"},
-    "pm": {"enabled": False},
-    "osc": {"enabled": True, "channel": "4", "ip": "123-223-233-233", "port": "4000"},
-}
-
-# Здесь задается порядок вложенных циклов.
-# Быстрее всего менятся последний элемент SCAN_ORDER
-SCAN_ORDER = ["wavelength","voltage", "current", "delay", "linewidth"]
-
-PARAM_UNITS = {
-    "voltage": "V",
-    "current": "mA",
-    "delay": "ps",
-    "linewidth": "nm",
-    "wavelength": "nm",
-}
 
 
-PARAM_NAMES = {
-    "voltage": "voltage",
-    "current": "current",
-    "delay": "delay",
-    "linewidth": "linewidth",
-    "wavelength": "wavelength",
-}
 
 PARAM_LABELS = {
     'frequensy_GHz': 'Frequency, GHz',

@@ -8,7 +8,7 @@ from matplotlib import rcParams
 from scripts.create_folder import create_date_folder
 from scripts.write_arrays_to_excel import write_arrays_excel
 from scripts.write_arrays_to_txt import write_arrays_txt
-from scripts.number_with_decimal_prefix import number_with_decimal_prefix
+from archive.number_with_decimal_prefix import number_with_decimal_prefix
 
 from measure_libs.oscilloscope_measure_lib import oscilloscope_measurement
 from measure_libs.yokogawa_measure_lib import yoko_measurement

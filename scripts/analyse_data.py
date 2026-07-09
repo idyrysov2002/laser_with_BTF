@@ -2,16 +2,16 @@ from pathlib import Path
 from tqdm import tqdm
 from create_map_and_save import create_map_and_save
 from create_folder import create_date_folder, create_multiple_subfolders
-from slice_current import slice_current
+from analyze_data.slice_current import slice_current
 from read_from_txt import read_txt_xyz, read_txt_xy
 from plot_and_save_xy import plot_and_save_xy
-from copy_files import copy_files
-from create_plot_grid import create_plot_grid
-from plot_histogram_grid import plot_histogram_grid
+from analyze_data.copy_file import copy_files
+from analyze_data.create_plot_grid import create_plot_grid
+from analyze_data.plot_histogram_grid import plot_histogram_grid
 import sys
 import os
 import numpy as np
-from plot_histogram_and_save import plot_histogram_and_save
+from analyze_data.plot_histogram_and_save import plot_histogram_and_save
 from calculate_FWHM_dBm import calculate_FWHM_dBm
 # Получаем путь к текущему файлу
 current_dir = os.path.dirname(os.path.abspath(__file__))

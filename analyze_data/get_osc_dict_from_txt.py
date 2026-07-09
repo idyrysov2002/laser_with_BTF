@@ -1,6 +1,6 @@
 from pathlib import Path
 
-def get_OSC_data_from_txt(txt_file_path):
+def get_osc_dict_from_txt(txt_file_path):
     """
     Извлекает метаданные из TXT файла осциллографа.
     
@@ -55,6 +55,6 @@ if __name__ == "__main__":
     folder_path=r'C:\Users\namys_23hvwev\Documents\DATA\data_from_lnf\laser_with_btf_March-31-2026_time_17-03-39\oscilloscope_measurements\wavelength_1550nm\voltage_2V\current_200mA\average\hor_scale_500.0ps'
     file_name=r'oscillogram_average_hor_scale_500.0ps_delay_0ps_current_200mA_voltage_2V_wavelength_1550nm.txt'
     full_path=Path(folder_path) / file_name
-    data = get_OSC_data_from_txt(txt_file_path=full_path)
+    data = get_osc_dict_from_txt(txt_file_path=full_path)
     
     print(data)
